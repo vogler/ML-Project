@@ -7,7 +7,7 @@ function [A, y] = processImages ()
 % set path
 cd ..
 dataPath = sprintf("%s/data/", pwd)
-cd "octave"
+cd "nn"
 path = regexprep(dataPath, '\\', '/')
 
 A = []; % matrix to store the image vectors
