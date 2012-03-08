@@ -1,7 +1,7 @@
-%% Initialization
+% Initialization
 clear ; close all; clc
 
-%% Setup parameters
+% Setup parameters
 data_folder = '../data';  % folder that contains the generated images
 lambda = 1;               % Regularization
 maxIter = 100;            % number of max. iterations
