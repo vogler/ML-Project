@@ -21,7 +21,7 @@ for i=1:10
 			currentFile = sprintf("%s%s", currentDirectory, files{x});
 			rgbImg = imread(currentFile);
 			grayImg = rgb2gray(rgbImg);
-			imshow(grayImg)
+			%imshow(grayImg)
 			grayImgVector = grayImg'(:)';
 			A(size(A,1)+1,:) = grayImgVector;
 			y(size(y,1)+1,:) = i;
