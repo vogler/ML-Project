@@ -8,6 +8,6 @@ function gray = rgb2gray (rgb)
 		end
 		%gray = round(mean(rgb,3))
 	else
-		gray = rgb
+		gray = rgb;
 	endif
 endfunction

@@ -25,7 +25,7 @@ for num in nums:
         text_width, text_height = font.getsize(str(num))
         #print text_width, text_height
         width, height = 20, 20
-        img = Image.new('RGBA', (width, height))
+        img = Image.new('RGB', (width, height), 'white')
         draw = ImageDraw.Draw(img)
         pos = (width/2-text_width/2, height/2-text_height/3)
         v = random.randint(0, color_sig)
