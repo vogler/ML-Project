@@ -37,7 +37,6 @@ fprintf('Training Neural Network (Backpropagation)...\n');
 % Iterations
 options = optimset('MaxIter', maxIter);
 
-
 fprintf('Using lambda=%f for regularization\n', lambda)
 
 % Create "short hand" for the cost function to be minimized
@@ -58,7 +57,7 @@ Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):en
                  num_labels, (hidden_layer_size + 1));
 
 
-% Visualize Weights
+% Visualize weights
 fprintf('Visualizing Neural Network...\n')
 
 displayData(Theta1(:, 2:end));
