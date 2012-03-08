@@ -11,7 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="9_myVersion.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PoseEstimation.cpp" />
   </ItemGroup>

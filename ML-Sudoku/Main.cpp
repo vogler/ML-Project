@@ -2,7 +2,7 @@
 #include <iostream>
 #include <iomanip>
 
-#include <GL/glut.h>
+#include <glut.h>
 
 #include <cv.h>
 #include <highgui.h>
