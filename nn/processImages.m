@@ -1,14 +1,12 @@
 %% Machine Learning
 
-function [A, y] = processImages ()
+function [A, y] = processImages (dir)
 % Initialization
 %clear ; close all; clc
 
 % set path
-cd ..
-dataPath = sprintf("%s/data/", pwd)
-cd "nn"
-path = regexprep(dataPath, '\\', '/')
+dataPath = sprintf("./%s/", dir);
+path = regexprep(dataPath, '\\', '/');
 
 A = []; % matrix to store the image vectors
 y = []; % holds the numbers represented by the image vectors
@@ -21,7 +19,7 @@ for i=1:10
 			currentFile = sprintf("%s%s", currentDirectory, files{x});
 			rgbImg = imread(currentFile);
 			grayImg = rgb2gray(rgbImg);
-			grayImgVector = double(grayImg'(:)');
+			grayImgVector = double(grayImg(:)');
 			A(size(A,1)+1,:) = grayImgVector/255;
 			y(size(y,1)+1,:) = i;
 			% imshow(grayImg);
