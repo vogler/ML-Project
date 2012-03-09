@@ -10,8 +10,8 @@ function config
 	
 	set_size = 100;			  % size of the k sets
 	
-	libsvm_path = "./libsvm-3.11/matlab";
-	addpath(libsvm_path);
+	% libsvm_path = "./";
+	% addpath(libsvm_path);
 	
 	use_nn = false;
 	use_svm = true;
