@@ -13,6 +13,7 @@ X(:,size(X,2)+1) = y;
 all_indexed_mixed = randperm(size(X,1));
 
 average_accuracy = 0;
+average_accuracy_svm = 0;
 number_of_sets = ceil(length(y)/set_size)
 
 for i = 0:number_of_sets-1
@@ -26,14 +27,21 @@ for i = 0:number_of_sets-1
 	X_val = X(sel, 1:size(X,2)-1);
 	y_val = X(sel, size(X,2));
 
-	% train network
+	% neural network
 	[Theta1, Theta2] = train(X_train,y_train);
-	
 	% accuracy when predicting values of test set
 	pred = predict(Theta1, Theta2, X_val);
 	acc = mean(double(pred == y_val))*100;
-	fprintf('Training Set Accuracy: %f\n', acc);
+	fprintf('Test Set Accuracy (Neural Network): %f\n', acc);
 	average_accuracy += length(y_val)*acc;
+	
+	% svm
+	model = svmtrain(y_train, X_train, "-q");
+	fprintf('Test Set Accuracy (SVM): ');
+	[predict_label, acc_svm, dec_values] = svmpredict(y_val,X_val,model);
+	average_accuracy_svm += length(y_val)*acc_svm(1);	
 end
-average_accuracy /= size(X,1)
-printf('Average accuracy: %f\n', average_accuracy);
+average_accuracy /= size(X,1);
+average_accuracy_svm /= size(X,1);
+printf('Average accuracy NN: %f\n', average_accuracy);
+printf('Average accuracy SVM: %f\n', average_accuracy_svm);

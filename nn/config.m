@@ -9,5 +9,9 @@ function config
 	num_labels = 10;          % 10 labels, from 1 to 10 (label 0)
 	
 	set_size = 100;			  % size of the k sets
+	
+	libsvm_path = "./libsvm-3.11/matlab";
+	addpath(libsvm_path);
+	
 	save("config.mat");
 endfunction

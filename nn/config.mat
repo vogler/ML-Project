@@ -1,4 +1,4 @@
-# Created by Octave 3.2.4, Fri Mar 09 14:43:53 2012 Mitteleuropäische Zeit <unknown@unknown>
+# Created by Octave 3.2.4, Fri Mar 09 17:16:43 2012 Mitteleuropäische Zeit <unknown@unknown>
 # name: data_folder
 # type: sq_string
 # elements: 1
@@ -13,6 +13,11 @@
 # name: lambda
 # type: scalar
 1
+# name: libsvm_path
+# type: string
+# elements: 1
+# length: 20
+./libsvm-3.11/matlab
 # name: maxIter
 # type: scalar
 10
