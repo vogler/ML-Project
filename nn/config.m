@@ -13,5 +13,8 @@ function config
 	libsvm_path = "./libsvm-3.11/matlab";
 	addpath(libsvm_path);
 	
+	use_nn = false;
+	use_svm = true;
+	
 	save("config.mat");
 endfunction
