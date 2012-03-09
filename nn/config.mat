@@ -1,0 +1,24 @@
+# Created by Octave 3.2.4, Thu Mar 08 21:57:44 2012 Mitteleuropäische Zeit <unknown@unknown>
+# name: data_folder
+# type: sq_string
+# elements: 1
+# length: 7
+../data
+# name: hidden_layer_size
+# type: scalar
+25
+# name: input_layer_size
+# type: scalar
+400
+# name: lambda
+# type: scalar
+1
+# name: maxIter
+# type: scalar
+2
+# name: num_labels
+# type: scalar
+10
+# name: set_size
+# type: scalar
+100

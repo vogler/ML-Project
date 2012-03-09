@@ -1,68 +1,39 @@
 % Initialization
 clear ; close all; clc
 
-% Setup parameters
-data_folder = '../data';  % folder that contains the generated images
-lambda = 1;               % Regularization
-maxIter = 100;            % number of max. iterations
-
-input_layer_size  = imgSize(data_folder);  % equals resolution of images
-hidden_layer_size = 25;   % 25 hidden units
-num_labels = 10;          % 10 labels, from 1 to 10 (label 0)
+config();
+load('config.mat');
 
 % Load images
 fprintf('Loading data from generated images...\n')
 [X,y] = processImages(data_folder);
-m = size(X, 1);
+X(:,size(X,2)+1) = y;
 
-% Randomly display 100 samples
-fprintf('Show 100 random samples\n')
-sel = randperm(size(X, 1));
-sel = sel(1:100);
+% mix row indexes
+all_indexed_mixed = randperm(size(X,1));
 
-displayData(X(sel, :));
+average_accuracy = 0;
+number_of_sets = ceil(l	ength(y)/set_size)
 
-% Randomly initialize weights
-fprintf('Randomly initializing Neural Network Parameters...\n')
+for i = 0:number_of_sets-1
+	printf('\n===== Starting iteration %i =====\n', i);
+	b = min((i+1)*set_size, size(y)); % needed if last set is smaller
+	sel = all_indexed_mixed(i*set_size+1 : b); % selecting the current set of row indexes
+	
+	% define training and test sets
+	X_train = X(complement(sel, 1:size(X,1)),1:size(X,2)-1);
+	y_train = X(complement(sel, 1:size(X,1)),size(X,2));
+	X_val = X(sel, 1:size(X,2)-1);
+	y_val = X(sel, size(X,2));
 
-initial_Theta1 = randInitializeWeights(input_layer_size, hidden_layer_size);
-initial_Theta2 = randInitializeWeights(hidden_layer_size, num_labels);
-
-% Unroll parameters
-initial_nn_params = [initial_Theta1(:) ; initial_Theta2(:)];
-
-% Training Neural Network (Backpropagation)...
-fprintf('Training Neural Network (Backpropagation)...\n');
-
-% Iterations
-options = optimset('MaxIter', maxIter);
-
-fprintf('Using lambda=%f for regularization\n', lambda)
-
-% Create "short hand" for the cost function to be minimized
-costFunction = @(p) nnCostFunction(p, ...
-                                   input_layer_size, ...
-                                   hidden_layer_size, ...
-                                   num_labels, X, y, lambda);
-
-% Now, costFunction is a function that takes in only one argument (the
-% neural network parameters)
-[nn_params, cost] = fmincg(costFunction, initial_nn_params, options);
-
-% Obtain Theta1 and Theta2 back from nn_params
-Theta1 = reshape(nn_params(1:hidden_layer_size * (input_layer_size + 1)), ...
-                 hidden_layer_size, (input_layer_size + 1));
-
-Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):end), ...
-                 num_labels, (hidden_layer_size + 1));
-
-
-% Visualize weights
-fprintf('Visualizing Neural Network...\n')
-
-displayData(Theta1(:, 2:end));
-
-% Predict: training set accuracy
-pred = predict(Theta1, Theta2, X);
-
-fprintf('Training Set Accuracy: %f\n', mean(double(pred == y)) * 100);
+	% train network
+	[Theta1, Theta2] = train(X_train,y_train);
+	
+	% accuracy when predicting values of test set
+	pred = predict(Theta1, Theta2, X_val);
+	acc = mean(double(pred == y_val))*100;
+	fprintf('Training Set Accuracy: %f\n', acc);
+	average_accuracy += acc;
+end
+average_accuracy /= number_of_sets
+printf('Average accuracy: %f\n', average_accuracy/number_of_sets);
