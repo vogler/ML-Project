@@ -1,4 +1,4 @@
-# Created by Octave 3.2.4, Fri Mar 09 14:26:37 2012 Mitteleuropäische Zeit <unknown@unknown>
+# Created by Octave 3.2.4, Fri Mar 09 14:43:53 2012 Mitteleuropäische Zeit <unknown@unknown>
 # name: data_folder
 # type: sq_string
 # elements: 1
@@ -15,7 +15,7 @@
 1
 # name: maxIter
 # type: scalar
-100
+10
 # name: num_labels
 # type: scalar
 10

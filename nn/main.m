@@ -33,7 +33,7 @@ for i = 0:number_of_sets-1
 	pred = predict(Theta1, Theta2, X_val);
 	acc = mean(double(pred == y_val))*100;
 	fprintf('Training Set Accuracy: %f\n', acc);
-	average_accuracy += acc;
+	average_accuracy += length(y_val)*acc;
 end
-average_accuracy /= number_of_sets
-printf('Average accuracy: %f\n', average_accuracy/number_of_sets);
+average_accuracy /= size(X,1)
+printf('Average accuracy: %f\n', average_accuracy);
