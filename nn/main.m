@@ -13,7 +13,7 @@ X(:,size(X,2)+1) = y;
 all_indexed_mixed = randperm(size(X,1));
 
 average_accuracy = 0;
-number_of_sets = ceil(l	ength(y)/set_size)
+number_of_sets = ceil(length(y)/set_size)
 
 for i = 0:number_of_sets-1
 	printf('\n===== Starting iteration %i =====\n', i);
