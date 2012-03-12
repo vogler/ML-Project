@@ -13,8 +13,9 @@ function config
 	% libsvm_path = "./";
 	% addpath(libsvm_path);
 	
-	use_nn = false;
+	use_nn = true;
 	use_svm = true;
+	use_lr = true;
 	
 	save("config.mat");
 endfunction
