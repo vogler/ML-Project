@@ -2,7 +2,7 @@ function config
 	% Setup parameters
 	data_folder = '../data';  % folder that contains the generated images
 	lambda = 1;               % Regularization
-	maxIter = 100;            % number of max. iterations
+	maxIter = 200;            % number of max. iterations
 
 	input_layer_size  = imgSize(data_folder);  % equals resolution of images
 	hidden_layer_size = 25;   % 25 hidden units
