@@ -6,9 +6,10 @@ folder = 'data'
 if os.path.exists(folder):
     shutil.rmtree(folder)
 
-fonts = ['arial.ttf', 'ariali.ttf', 'comicbd.ttf']
-size_mu = 20
+fonts = ['arial.ttf', 'ariali.ttf', 'comicbd.ttf', 'LHANDW.TTF', 'HoboStd.otf']
+size_mu = 19
 size_sig = 3
+pos_sig = 2
 color_sig = 100
 color_bg = 'white'
 rotate_sig = 25
@@ -36,6 +37,7 @@ for num in nums:
         img = Image.new('RGB', (width, height), color_bg)
         draw = ImageDraw.Draw(img)
         pos = (width/2-text_width/2, height/2-text_height/3)
+        pos = pos[0]+distr(0, pos_sig), pos[1]+distr(0, pos_sig)
         v = random.randint(0, color_sig)
         draw.text(pos, str(num), font=font, fill=(v,v,v))
         img = rotate(img, distr(0, rotate_sig), color_bg)
