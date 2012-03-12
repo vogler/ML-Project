@@ -6,7 +6,7 @@ folder = 'data'
 if os.path.exists(folder):
     shutil.rmtree(folder)
 
-fonts = ['arial.ttf', 'ariali.ttf', 'comicbd.ttf', 'LHANDW.TTF', 'HoboStd.otf']
+fonts = ['arial.ttf', 'ariali.ttf', 'comicbd.ttf', 'HARNGTON.TTF', 'FREESCPT.TTF'] #'LHANDW.TTF', 'HoboStd.otf']
 size_mu = 19
 size_sig = 3
 pos_sig = 2
@@ -14,7 +14,7 @@ color_sig = 100
 color_bg = 'white'
 rotate_sig = 25
 nums = xrange(1,10)
-samples = xrange(0,100)
+samples = xrange(0,500)
 width, height = 20, 20
 
 def distr(a, b):

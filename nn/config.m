@@ -1,6 +1,7 @@
 function config
 	% Setup parameters
 	data_folder = '../data';  % folder that contains the generated images
+    cache_file  = 'cache.mat';% name of the cache file
 	lambda = 1;               % Regularization
 	maxIter = 200;            % number of max. iterations
 

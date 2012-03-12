@@ -5,8 +5,16 @@ config();
 load('config.mat');
 
 % Load images
-fprintf('Loading data from generated images...\n')
-[X,y] = processImages(data_folder);
+cache = sprintf("%s/%s", data_folder, cache_file);
+if exist(cache)
+    fprintf('Loading generated images (from cache)...\n')
+    load(cache);
+else
+    fprintf('Loading generated images...\n')
+    [X,y] = processImages(data_folder);
+    % save("-binary", cache, "X", "y");
+    save(cache, "X", "y");
+endif
 X(:,size(X,2)+1) = y;
 
 % mix row indexes
