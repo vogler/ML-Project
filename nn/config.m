@@ -3,6 +3,7 @@ function config (lambda=1, maxIter=100)
 	data_folder = '../data';  % folder that contains the generated images
     cache_file  = 'cache.mat';% name of the cache file
 	models_file = 'models.mat'; % contains trained models/parameters of nn/svm/lr
+	input_folder = '../input'; % folder that contains all images from the observed sudoku
 	%lambda = 1;               % Regularization
 	%maxIter = 100;            % number of max. iterations
 

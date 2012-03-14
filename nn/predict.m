@@ -1,11 +1,11 @@
 function [pNN, pSVM, pLR] = predict(X)
-	pNN = -1;
-	pSVM = -1;
-	pLR = -1;
+	m = size(X, 1);
+	pNN = ones(m,1)*(-1);
+	pSVM = ones(m,1)*(-1);
+	pLR = ones(m,1)*(-1);
 	load('config.mat');
 	load(models_file);
 	
-	m = size(X, 1);
 	
 	if (exist("Theta1") && exist("Theta2"))
 		% predict with NN
@@ -20,5 +20,8 @@ function [pNN, pSVM, pLR] = predict(X)
 	if (exist("Theta"))
 		pLR = predictLogReg(Theta,X);
 	endif
-	printf("predicted values (-1 means that model was not trained):\n  NN: %d\n  SVM: %d\n  LR: %d\n", pNN, pSVM, pLR);
+	pNN
+	pSVM
+	pLR
+	%printf("predicted values (-1 means that model was not trained):\n  NN: %d\n  SVM: %d\n  LR: %d\n", pNN, pSVM, pLR);
 end
