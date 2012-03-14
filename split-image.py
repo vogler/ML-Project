@@ -59,8 +59,10 @@ img.thumbnail((9*size, 9*size), Image.ANTIALIAS)
 img.save(tmp+'resized.png', 'PNG')
 histogram = []
 for i in range(9*9):
-    x = i%9*size
-    y = i/9*size
+    row = i%9
+    col = i/9
+    x = row*size
+    y = col*size
     cropped = img.crop((x+m, y+m, x+size-m, y+size-m))
     cropped = process(cropped)
     file = str(i+1)+'.png'
