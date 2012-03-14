@@ -1,4 +1,4 @@
 @echo off
-pushd nn
+pushd octave
 octave processInput.m
 popd
