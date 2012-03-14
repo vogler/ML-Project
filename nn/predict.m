@@ -1,20 +1,21 @@
-function p = predict(Theta1, Theta2, X)
-%PREDICT Predict the label of an input given a trained neural network
-%   p = PREDICT(Theta1, Theta2, X) outputs the predicted label of X given the
-%   trained weights of a neural network (Theta1, Theta2)
-
-% Useful values
-m = size(X, 1);
-num_labels = size(Theta2, 1);
-
-% You need to return the following variables correctly 
-p = zeros(size(X, 1), 1);
-
-h1 = sigmoid([ones(m, 1) X] * Theta1');
-h2 = sigmoid([ones(m, 1) h1] * Theta2');
-[dummy, p] = max(h2, [], 2);
-
-% =========================================================================
-
-
+function [pNN, pSVM, pLR] = predict(X)
+	load('config.mat');
+	load(models_file);
+	
+	m = size(X, 1);
+	
+	if (exist("Theta1") && exist("Theta2"))
+		% predict with NN
+		pNN = predictNN(Theta1, Theta2, X);
+	endif
+	if (exist("model"))
+		% predict with SVM		
+		%[predict_label, acc_svm, dec_values] = svmpredict(y_val,X_val,model);
+		printf("...ignore this output, it is from libsvm...");
+		[pSVM,_,_] = svmpredict(ones(m,1),X,model);
+	endif
+	if (exist("Theta"))
+		pLR = predictLogReg(Theta,X);
+	endif
+	printf("predicted values:\n  NN: %d\n  SVM: %d\n  LR: %d\n", pNN, pSVM, pLR);
 end

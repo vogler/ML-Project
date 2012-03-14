@@ -10,10 +10,10 @@ num_labels = size(Theta, 2);
 p = zeros(size(X, 1), 1);
 
 % Add ones to the X data matrix
-X = [ones(m, 1) X];
+%X = [ones(m, 1) X];
 
 % predict and choose max element in row
-p = sigmoid(X*Theta);
+p = sigmoid([ones(m, 1) X]*Theta);
 [_,p] = max(p,[],2);
 
 
