@@ -15,5 +15,5 @@ function config
 	use_svm = false;
 	use_lr = false;
 	
-	save("config.mat");
+	save("-mat-binary", "config.mat");
 endfunction
