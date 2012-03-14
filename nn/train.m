@@ -4,11 +4,10 @@ function [Theta1, Theta2] = train(X, y)
 	m = size(X, 1);
 
 	% Randomly display 10 samples
-	fprintf('Show 10 random samples\n')
-	sel = randperm(size(X, 1));
-	sel = sel(1:10);
-
-	%displayData(X(sel, :));
+	% fprintf('Show 10 random samples\n')
+	% sel = randperm(size(X, 1));
+	% sel = sel(1:10);
+	% displayData(X(sel, :));
 
 	% Randomly initialize weights
 	fprintf('Randomly initializing Neural Network Parameters...\n')

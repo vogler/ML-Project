@@ -12,8 +12,8 @@ if exist(cache)
 else
     fprintf('Loading generated images...\n')
     [X,y] = processImages(data_folder);
-    save("-binary", cache, "X", "y");
-    % save(cache, "X", "y");
+    save("-mat-binary", cache, "X", "y");
+    %save(cache, "X", "y");
 endif
 X(:,size(X,2)+1) = y;
 
