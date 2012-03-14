@@ -6,6 +6,7 @@
 %\documentstyle[icml2010,epsf,natbib]{article}
 % If you rely on Latex2e packages, like most moden people use this:
 \documentclass{article}
+\usepackage[utf8]{inputenc}
 
 % For figures
 \usepackage{graphicx} % more modern
@@ -41,39 +42,36 @@
 
 % The \icmltitle you define below is probably too long as a header.
 % Therefore, a short form for the running title is supplied here:
-\icmltitlerunning{Submission and Formatting Instructions for ICML 2010}
+\icmltitlerunning{Number recognition for use in a Sudoku solver}
 
 \begin{document} 
 
 \twocolumn[
-\icmltitle{Submission and Formatting Instructions for the Twenty-Seventh \\ 
-           International Conference on Machine Learning (ICML 2010)}
+\icmltitle{Number recognition for use in a Sudoku solver}
 
 % It is OKAY to include author information, even for blind
 % submissions: the style file will automatically remove it for you
 % unless you've provided the [accepted] option to the icml2010
 % package.
-\icmlauthor{Your Name}{email@yourdomain.edu}
-\icmladdress{Your Fantastic Institute,
-            314159 Pi St., Palo Alto, CA 94306 USA}
-\icmlauthor{Your CoAuthor's Name}{email@coauthordomain.edu}
-\icmladdress{Their Fantastic Institute,
-            27182 Exp St., Toronto, ON M6H 2T1 CANADA}
+\icmlauthor{Ralf Vogler}{voglerr@in.tum.de}
+\icmladdress{TU München}
+\icmlauthor{Simon Grötzinger}{groetzin@in.tum.de}
+\icmladdress{TU München}
 
 % You may provide any keywords that you 
 % find helpful for describing your paper; these are used to populate 
 % the "keywords" metadata in the PDF but will not be shown in the document
-\icmlkeywords{boring formatting information, machine learning, ICML}
+\icmlkeywords{neural network, svm, logistic regression, synthetic data generation, machine learning}
 
 \vskip 0.3in
 ]
 
-\begin{abstract} 
+\begin{abstract}
 ICML 2010 full paper submissions are due February 1, 2010. Reviewing will
 be blind to the identities of the authors, and therefore identifying
 information should not appear in any way in papers submitted for
 review. Submissions must be in PDF, 8 page length limit.
-\end{abstract} 
+\end{abstract}
 
 \section{Electronic Submission}
 \label{submission}
@@ -528,7 +526,7 @@ support.
 % references without citing it in the main text, use \nocite
 \nocite{langley00}
 
-\bibliography{example_paper}
+\bibliography{paper}
 \bibliographystyle{icml2010}
 
 \end{document} 
