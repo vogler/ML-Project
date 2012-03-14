@@ -63,3 +63,5 @@ libs/
 *.mtc1
 *.out
 *.synctex.gz
+ML-Sudoku/ML Project.opensdf
+*.pyc
