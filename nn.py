@@ -26,6 +26,7 @@ n_in = int(config['input_layer_size'][0][0])
 n_hidden = int(config['hidden_layer_size'][0][0])
 n_classes = int(config['num_labels'][0][0])
 weightdecay = config['lambda'][0][0]
+maxIter = int(config['maxIter'][0][0])
 
 def main():    
     ds = ClassificationDataSet(n_in, 1, nb_classes=n_classes)
@@ -48,9 +49,10 @@ def main():
     # print trndata['input'][0], trndata['target'][0], trndata['class'][0]
     
     net = buildNetwork(trndata.indim, n_hidden, trndata.outdim, bias=True, hiddenclass=SigmoidLayer, outclass=SoftmaxLayer) #, recurrent=True)
+    print "Learning with lambda = %f. Performing %i iterations" % (weightdecay, maxIter)
     trainer = BackpropTrainer(net, trndata, learningrate=0.01, weightdecay=weightdecay)
 
-    for i in xrange(20):
+    for i in xrange(maxIter):
         # print trainer.train()
         # train the network for 1 epoch
         trainer.trainEpochs(1)
