@@ -12,22 +12,26 @@ from pybrain.supervised.trainers import BackpropTrainer
 from pybrain.utilities           import percentError
 from pybrain.tests.helpers import gradientCheck
 
-n_in = 400
-n_hidden = 25
-n_classes = 9
+#n_in = 400
+#n_hidden = 25
+#n_classes = 9
+config = loadmat('nn/config.mat')
+cache = config['data_folder'][0].replace('../', '')+'/'+config['cache_file'][0]
+if not os.path.exists(cache):
+    raise Exception('Cache file ('+cache+') is missing and has to be generated first! Run octave version...')
+mat = loadmat(cache)
+X = mat['X']
+y = mat['y']
+n_in = int(config['input_layer_size'][0][0])
+n_hidden = int(config['hidden_layer_size'][0][0])
+n_classes = int(config['num_labels'][0][0])
+weightdecay = config['lambda'][0][0]
+maxIter = int(config['maxIter'][0][0])
 
-def main():
-    config = loadmat('nn/config.mat')
-    cache = config['data_folder'][0].replace('../', '')+'/'+config['cache_file'][0]
-    if not os.path.exists(cache):
-        raise Exception('Cache file ('+cache+') is missing and has to be generated first! Run octave version...')
-    mat = loadmat(cache)
-    X = mat['X']
-    y = mat['y']
-    
+def main():    
     ds = ClassificationDataSet(n_in, 1, nb_classes=n_classes)
-    for (x, y) in zip(X, y):
-        ds.addSample(x, [y-1])
+    for (x, l) in zip(X, y):
+        ds.addSample(x, l-1)
     # ds.assignClasses()
     
     tstdata, trndata = ds.splitWithProportion(0.25)
@@ -45,9 +49,10 @@ def main():
     # print trndata['input'][0], trndata['target'][0], trndata['class'][0]
     
     net = buildNetwork(trndata.indim, n_hidden, trndata.outdim, bias=True, hiddenclass=SigmoidLayer, outclass=SoftmaxLayer) #, recurrent=True)
-    trainer = BackpropTrainer(net, trndata)
+    print "Learning with lambda = %f. Performing %i iterations" % (weightdecay, maxIter)
+    trainer = BackpropTrainer(net, trndata, learningrate=0.01, weightdecay=weightdecay)
 
-    for i in xrange(50):
+    for i in xrange(maxIter):
         # print trainer.train()
         # train the network for 1 epoch
         trainer.trainEpochs(1)

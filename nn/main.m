@@ -28,7 +28,13 @@ cpu_time_svm = 0;
 cpu_time_lr = 0;
 number_of_sets = ceil(length(y)/set_size)
 
-for i = 0:number_of_sets-1
+if (do_cross_validation)
+	loops = number_of_sets-1;
+else
+	loops = 0;
+endif
+
+for i = 0:loops
 	printf('\n===== Starting iteration %i (next training/test set combination) =====\n', i);
 	b = min((i+1)*set_size, size(y)); % needed if last set is smaller
 	sel = all_indexed_mixed(i*set_size+1 : b); % selecting the current set of row indexes
@@ -47,7 +53,7 @@ for i = 0:number_of_sets-1
 		cpu_time_nn += cputime-t;
 		%printf('Total cpu time for training: %f seconds\n', cputime-t);
 		% accuracy when predicting values of test set
-		pred = predict(Theta1, Theta2, X_val);
+		pred = predictNN(Theta1, Theta2, X_val);
 		acc = mean(double(pred == y_val))*100;
 		fprintf('Test Set Accuracy (Neural Network): %f\n', acc);
 		average_accuracy += length(y_val)*acc;
@@ -78,18 +84,23 @@ for i = 0:number_of_sets-1
 		average_accuracy_log_reg += length(y_val)*acc;
 	endif
 end
-if (use_nn)
-	average_accuracy /= size(X,1);
-	printf('Average accuracy NN: %f\n', average_accuracy);
-	printf('Total cpu time for training: %f seconds\n', cpu_time_nn);
+if (do_cross_validation)
+	if (use_nn)
+		average_accuracy /= size(X,1);
+		printf('Average accuracy NN: %f\n', average_accuracy);
+		printf('Total cpu time for training: %f seconds\n', cpu_time_nn);
+	endif
+	if (use_svm)
+		average_accuracy_svm /= size(X,1);
+		printf('Average accuracy SVM: %f\n', average_accuracy_svm);
+		printf('Total cpu time for training: %f seconds\n', cpu_time_svm);
+	endif
+	if (use_lr)
+		average_accuracy_log_reg /= size(X,1);
+		printf('Average accuracy log reg: %f\n', average_accuracy_log_reg);
+		printf('Total cpu time for training: %f seconds\n', cpu_time_lr);
+	endif
 endif
-if (use_svm)
-	average_accuracy_svm /= size(X,1);
-	printf('Average accuracy SVM: %f\n', average_accuracy_svm);
-	printf('Total cpu time for training: %f seconds\n', cpu_time_svm);
-endif
-if (use_lr)
-	average_accuracy_log_reg /= size(X,1);
-	printf('Average accuracy log reg: %f\n', average_accuracy_log_reg);
-	printf('Total cpu time for training: %f seconds\n', cpu_time_lr);
-endif
+
+% save the trained models
+save("-mat-binary", models_file, "Theta1", "Theta2", "model", "Theta");
