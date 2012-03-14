@@ -1,4 +1,7 @@
 function [pNN, pSVM, pLR] = predict(X)
+	pNN = -1;
+	pSVM = -1;
+	pLR = -1;
 	load('config.mat');
 	load(models_file);
 	
@@ -17,5 +20,5 @@ function [pNN, pSVM, pLR] = predict(X)
 	if (exist("Theta"))
 		pLR = predictLogReg(Theta,X);
 	endif
-	printf("predicted values:\n  NN: %d\n  SVM: %d\n  LR: %d\n", pNN, pSVM, pLR);
+	printf("predicted values (-1 means that model was not trained):\n  NN: %d\n  SVM: %d\n  LR: %d\n", pNN, pSVM, pLR);
 end
