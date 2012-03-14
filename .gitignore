@@ -2,7 +2,7 @@
 *.pdf
 *.class
 
-config.mat
+*.mat
 
 #ignore thumbnails created by windows
 Thumbs.db
