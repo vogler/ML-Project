@@ -12,10 +12,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="PoseEstimation.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="PoseEstimation.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{CA252876-03BB-4FB3-8DE7-799305BC56AA}</ProjectGuid>

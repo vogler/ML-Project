@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <iomanip>
 
@@ -7,13 +6,16 @@
 
 #include <math.h>
 
+#define DEBUG 0
+
 using namespace std;
 
-bool debugmode = false;
+bool debug = false;
 bool adaptiveTh = true;
 
 const int MIN = 120;
 const int S = 360;
+const int MARGIN = 8;
 
 int thresh = 100;
 int bw_thresh = 80;
@@ -21,12 +23,10 @@ int bw_thresh = 80;
 const int width = 640; 
 const int height = 480;
 
+bool run = true;
+
 CvCapture* cap;
 CvMemStorage* memStorage;
-
-float resultMatrix_005A[16];
-float resultMatrix_0272[16];
-float resultTransposedMatrix[16];
 
 #define PI 3.14159265
 
@@ -73,8 +73,8 @@ int subpixSampleSafe ( const IplImage* pSrc, CvPoint2D32f p )
 void init()
 {
 	cvNamedWindow ("Original Image", CV_WINDOW_AUTOSIZE);
-	cvNamedWindow ("Converted Image", CV_WINDOW_AUTOSIZE);
-	cvNamedWindow ("Stripe", CV_WINDOW_AUTOSIZE);
+	if(DEBUG) cvNamedWindow ("Converted Image", CV_WINDOW_AUTOSIZE);
+	if(DEBUG) cvNamedWindow ("Stripe", CV_WINDOW_AUTOSIZE);
 	cvNamedWindow ("Marker", 0 );
 	cvResizeWindow("Marker", S, S );
 	initVideoStream();
@@ -89,6 +89,7 @@ void init()
 
 	memStorage = cvCreateMemStorage();
 }
+
 
 void idle()
 {
@@ -124,6 +125,13 @@ void idle()
 		iplThreshold, memStorage, &contours, sizeof(CvContour),
 		CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE
 	);
+
+
+	//create image for the marker
+	CvSize markerSize;
+	markerSize.width  = S;
+	markerSize.height = S;
+	IplImage* iplMarker = cvCreateImage( markerSize, IPL_DEPTH_8U, 1 );
 
 	for (; contours; contours = contours->h_next)
 	{
@@ -285,7 +293,7 @@ void idle()
 					points[j-1].x = edgeCenter.x;
 					points[j-1].y = edgeCenter.y;
 
-					if (isFirstStripe)
+					if (isFirstStripe && DEBUG)
 					{
 						IplImage* iplTmp = cvCreateImage( cvSize(100,300), IPL_DEPTH_8U, 1 );
 						cvResize( iplStripe, iplTmp, CV_INTER_NN );
@@ -362,28 +370,33 @@ void idle()
 
 			int i;
 			CvPoint2D32f targetCorners[4];
-			targetCorners[0].x = -0.5; targetCorners[0].y = -0.5;
-			targetCorners[1].x =  S+.5; targetCorners[1].y = -0.5;
-			targetCorners[2].x =  S+.5; targetCorners[2].y =  S+.5;
-			targetCorners[3].x = -0.5; targetCorners[3].y =  S+.5;
+			int m = MARGIN; // margin 0.5
+			targetCorners[0].x = -m; targetCorners[0].y = -m;
+			targetCorners[1].x =  S+m; targetCorners[1].y = -m;
+			targetCorners[2].x =  S+m; targetCorners[2].y =  S+m;
+			targetCorners[3].x = -m; targetCorners[3].y =  S+m;
 
 			//create and calculate the matrix of perspective transform
 			CvMat* projMat = cvCreateMat (3, 3, CV_32F );
 			cvWarpPerspectiveQMatrix ( corners, targetCorners, projMat);
 
-			//create image for the marker
-			CvSize markerSize;
-			markerSize.width  = S;
-			markerSize.height = S;
-			IplImage* iplMarker = cvCreateImage( markerSize, IPL_DEPTH_8U, 1 );
+			// create marker -> moved before for-loop
 
 			//change the perspective in the marker image using the previously calculated matrix
 			cvWarpPerspective(iplConverted, iplMarker, projMat, CV_WARP_FILL_OUTLIERS,  cvScalarAll(0));
 			
 			//cvConvertImage(iplMarker, iplMarker, 0);
-			cvThreshold(iplMarker, iplMarker, bw_thresh, 255, CV_THRESH_BINARY);
-			cvShowImage ( "Marker", iplMarker );
+			//cvThreshold(iplMarker, iplMarker, bw_thresh, 255, CV_THRESH_BINARY);
+			cvAdaptiveThreshold(iplMarker, iplMarker, 255, CV_ADAPTIVE_THRESH_MEAN_C, CV_THRESH_BINARY, 25, 10);
 
+			// rotate counter-clockwise: cvFlip(iplMarker);
+			// flipMode=1 -> clockwise
+			// http://stackoverflow.com/questions/2259678/easiest-way-to-transpose-an-image-rotate-by-90-degrees-using-opencv
+			cvTranspose(iplMarker, iplMarker);
+			cvFlip(iplMarker, iplMarker, 1);
+			//cvTranspose(iplMarker, iplMarker);
+			//cvFlip(iplMarker);
+			cvShowImage ( "Marker", iplMarker );
 
 
 
@@ -406,50 +419,6 @@ void idle()
 
 			if ( code < 0 ) continue;
 
-			/*
-			//copy the BW values into cP
-			int cP[4][4];
-			for ( int i=0; i < 4; ++i)
-			{
-				for ( int j=0; j < 4; ++j)
-				{
-					cP[i][j] = ((unsigned char*)(iplMarker->imageData + (i+1)*iplMarker->widthStep + (j+1) ))[0];
-					cP[i][j] = (cP[i][j]==0) ? 1 : 0; //if black then 1 else 0
-				}
-			}
-
-			//save the ID of the marker
-			int codes[4];
-			codes[0] = codes[1] = codes[2] = codes[3] = 0;
-			for (int i=0; i < 16; i++)
-			{
-				int row = i>>2;
-				int col = i%4;
-
-				codes[0] <<= 1;
-				codes[0] |= cP[row][col]; // 0°
-
-				codes[1] <<= 1;
-				codes[1] |= cP[3-col][row]; // 90°
-
-				codes[2] <<= 1;
-				codes[2] |= cP[3-row][3-col]; // 180°
-
-				codes[3] <<= 1;
-				codes[3] |= cP[col][3-row]; // 270°
-			}
-
-			// transfer camera coords to screen coords
-			for(int i = 0; i<4; i++)
-			{
-				corners[i].x -= width/2;
-				corners[i].y = -corners[i].y + height/2;
-			}
-			
-			if(code == 0x005a) estimateSquarePose( resultMatrix_005A, corners, 0.045 );
-			else if(code == 0x0272) estimateSquarePose( resultMatrix_0272, corners, 0.045 );
-			*/
-
 			cvReleaseMat (&projMat);
 
 			delete[] rect;
@@ -457,11 +426,16 @@ void idle()
 	} // end of loop over contours
 
 	cvShowImage("Original Image", iplGrabbed);
-	cvShowImage("Converted Image", iplThreshold);
+	if(DEBUG) cvShowImage("Converted Image", iplThreshold);
 
 	int key = cvWaitKey (10);
-	if (key == 27) exit(0);
-	else if (key == 100) debugmode = !debugmode;
+	if (key == 27) { run = false; }
+	else if (key == 100) debug = !debug;
+	else if (key == 99){
+		cout << "caputure!\n";
+		cvSaveImage("sudoku.png", iplMarker);
+		//run = false;
+	}
 
 	isFirstStripe = true;
 	isFirstMarker = true;
@@ -486,11 +460,12 @@ void cleanup()
 
 int main(int argc, char* argv[]) 
 {
-	cout << "Startup\n";
+	cout << "Press 'Esc' exit\n";
+	cout << "Press 'c' to capture once the image seems right (yellow dot in left upper corner)...\n";
 	// setup OpenCV
 	init();
 
-	while (1){
+	while (run){
 		Sleep(10);
 		idle();
 	}

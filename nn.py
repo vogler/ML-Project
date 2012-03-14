@@ -1,4 +1,3 @@
-#from libs.pybrain.structure import FeedForwardNetwork
 import os, sys
 from scipy.io import loadmat
 
@@ -10,7 +9,7 @@ from pybrain.structure           import SigmoidLayer, TanhLayer, SoftmaxLayer
 from pybrain.datasets            import ClassificationDataSet
 from pybrain.supervised.trainers import BackpropTrainer
 from pybrain.utilities           import percentError
-from pybrain.tests.helpers import gradientCheck
+from pybrain.tests.helpers       import gradientCheck
 
 #n_in = 400
 #n_hidden = 25
