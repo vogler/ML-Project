@@ -2,51 +2,33 @@
 #include <iostream>
 #include <iomanip>
 
-#include <glut.h>
-
 #include <cv.h>
 #include <highgui.h>
 
 #include <math.h>
 
-#include "PoseEstimation.h"
-
 using namespace std;
 
-// Added in Exercise 9 - Start *****************************************************************
-#define PI 3.14159265
-
-struct Position { double x,y,z; };
-
 bool debugmode = false;
-bool balldebug = false;
-// Added in Exercise 9 - End *****************************************************************
+bool adaptiveTh = true;
+
+const int MIN = 120;
+const int S = 360;
 
 int thresh = 100;
-CvCapture* cap;
-
-int bw_thresh = 40;
-
-CvMemStorage* memStorage;
-
-// Added in Exercise 9 - Start *****************************************************************
-float resultMatrix_005A[16];
-float resultMatrix_0272[16];
-float resultTransposedMatrix[16];
-float snowmanLookVector[4];
-int towards = 0x005A;
-int towardsList[2] = {0x005a, 0x0272};
-int towardscounter = 0;
-Position ballpos;
-int ballspeed = 100;
-// Added in Exercise 9 - End *****************************************************************
-
+int bw_thresh = 80;
 //camera settings
 const int width = 640; 
 const int height = 480;
-const int camangle = 35;
 
-unsigned char bkgnd[width*height*3];
+CvCapture* cap;
+CvMemStorage* memStorage;
+
+float resultMatrix_005A[16];
+float resultMatrix_0272[16];
+float resultTransposedMatrix[16];
+
+#define PI 3.14159265
 
 void trackbarHandler(int pos) {
 	thresh = pos;
@@ -61,7 +43,7 @@ void initVideoStream() {
 
 	if (!cap) {
 		cout << "No webcam found, using video file\n";
-		cap = cvCaptureFromFile("C:\\Andi\\Uni\\SVNs\\far_intern\\teaching\\2010WS\\AR\\Exercises\\Solutions\\MarkerMovie.mpg");
+		cap = cvCaptureFromFile("C:\\MarkerMovie.mpg");
 		if (!cap) {
 			cout << "No video file found. Exiting.\n";
 			exit(0);
@@ -88,91 +70,22 @@ int subpixSampleSafe ( const IplImage* pSrc, CvPoint2D32f p )
 	return a + ( ( dy * ( b - a) ) >> 8 );
 }
 
-// Added in Exercise 9 - Start *****************************************************************
-void multMatrix(float mat[16], float vec[4])
-{
-	for(int i=0; i<4; i++)
-	{
-		snowmanLookVector[i] = 0;
-		for(int j=0; j<4; j++)
-			  snowmanLookVector[i] += mat[4*i + j] * vec[j];
-	}
-}
-
-void moveBall(float mat[16])
-{
-	float vector[3];
-	vector[0] = mat[3] - ballpos.x;
-	vector[1] = mat[7] - ballpos.y;
-	vector[2] = mat[11] - ballpos.z;
-
-	float length = sqrt( vector[0]*vector[0] + vector[1]*vector[1] + vector[2]*vector[2] );
-	if(balldebug) std::cout << length << std::endl;
-	if( length < 0.01) 
-	{ 
-		towards = towardsList[(towardscounter++)%2]; 
-		if(balldebug) std::cout << "target changed to marker " << towards << std::endl; 
-		ballspeed = 60 + 80 * rand()/RAND_MAX;
-		return; 
-	}
-	ballpos.x += vector[0] / (ballspeed * length);
-	ballpos.y += vector[1] / (ballspeed * length);
-	ballpos.z += vector[2] / (ballspeed * length);
-
-}
-
-void rotateToMarker(float thisMarker[16], float lookAtMarker[16], int markernumber)
-{
-	float vector[3];
-	vector[0] = lookAtMarker[3] - thisMarker[3];
-	vector[1] = lookAtMarker[7] - thisMarker[7];
-	vector[2] = lookAtMarker[11] - thisMarker[11];
-
-	if(towards == markernumber) moveBall(lookAtMarker);
-	
-	//normalize vector
-	float help = sqrt( vector[0]*vector[0] + vector[1]*vector[1] + vector[2]*vector[2] );
-	vector[0] /= help;
-	vector[1] /= help;
-	vector[2] /= help;
-
-	if(debugmode) std::cout << "Vector: " << vector[0] << ", " << vector[1] << ", " << vector[2] << std::endl;
-
-	float defaultLook[4] = {1,0,0,0};
-	multMatrix(thisMarker, defaultLook);
-
-	//normalize snowmanLookVector
-	help = sqrt( snowmanLookVector[0]*snowmanLookVector[0] + snowmanLookVector[1]*snowmanLookVector[1] + snowmanLookVector[2]*snowmanLookVector[2] );
-	snowmanLookVector[0] /= help;
-	snowmanLookVector[1] /= help;
-	snowmanLookVector[2] /= help;
-
-	if(debugmode) std::cout << "SnowmanLookVector: " << snowmanLookVector[0] << ", " << snowmanLookVector[1] << ", " << snowmanLookVector[2] << std::endl;
-
-	float angle = (180 / PI) * acos( vector[0] * snowmanLookVector[0] + vector[1] * snowmanLookVector[1] + vector[2] * snowmanLookVector[2] );
-	if((vector[0] * snowmanLookVector[1] - vector[1] * snowmanLookVector[0]) < 0 ) angle *= -1;
-	
-	if(debugmode) std::cout << "Angle: " << angle << std::endl;
-	
-	glRotatef(angle, 0, 0, 1);
-}
-// Added in Exercise 9 - End *****************************************************************
-
 void init()
 {
-	cvNamedWindow ("Exercise 8 - Original Image", CV_WINDOW_AUTOSIZE);
-	cvNamedWindow ("Exercise 8 - Converted Image", CV_WINDOW_AUTOSIZE);
-	cvNamedWindow ("Exercise 8 - Stripe", CV_WINDOW_AUTOSIZE);
+	cvNamedWindow ("Original Image", CV_WINDOW_AUTOSIZE);
+	cvNamedWindow ("Converted Image", CV_WINDOW_AUTOSIZE);
+	cvNamedWindow ("Stripe", CV_WINDOW_AUTOSIZE);
 	cvNamedWindow ("Marker", 0 );
-	cvResizeWindow("Marker", 120, 120 );
+	cvResizeWindow("Marker", S, S );
 	initVideoStream();
 
-	int value = thresh;
 	int max = 255;
-	cvCreateTrackbar( "Threshold", "Exercise 8 - Converted Image", &value, max, trackbarHandler);
-
+	if(!adaptiveTh){
+		int value = thresh;
+		cvCreateTrackbar( "Threshold", "Converted Image", &value, max, trackbarHandler);
+	}
 	int bw_value = bw_thresh;
-	cvCreateTrackbar( "BW Threshold", "Exercise 8 - Converted Image", &bw_value, max, bw_trackbarHandler);
+	cvCreateTrackbar( "BW Threshold", "Converted Image", &bw_value, max, bw_trackbarHandler);
 
 	memStorage = cvCreateMemStorage();
 }
@@ -180,7 +93,6 @@ void init()
 void idle()
 {
 	bool isFirstStripe = true;
-
 	bool isFirstMarker = true;
 
 	IplImage* iplGrabbed = cvQueryFrame(cap);
@@ -194,15 +106,17 @@ void idle()
 
 	CvSize picSize = cvGetSize(iplGrabbed);
 
-	memcpy( bkgnd, iplGrabbed->imageData, sizeof(bkgnd) );
+	//memcpy( bkgnd, iplGrabbed->imageData, sizeof(bkgnd) );
 
 	IplImage* iplConverted = cvCreateImage(picSize, IPL_DEPTH_8U, 1);
 	IplImage* iplThreshold = cvCreateImage(picSize, IPL_DEPTH_8U, 1);
 
 	cvConvertImage(iplGrabbed, iplConverted, 0);
-	cvThreshold(iplConverted, iplThreshold, thresh, 255, CV_THRESH_BINARY);
-	//cvAdaptiveThreshold(iplConverted, iplThreshold, 255, CV_ADAPTIVE_THRESH_MEAN_C, CV_THRESH_BINARY, 33, 5);
-
+	if(adaptiveTh){
+		cvAdaptiveThreshold(iplConverted, iplThreshold, 255, CV_ADAPTIVE_THRESH_MEAN_C, CV_THRESH_BINARY, 33, 5);
+	}else{
+		cvThreshold(iplConverted, iplThreshold, thresh, 255, CV_THRESH_BINARY);
+	}
 	// Find Contours
 	CvSeq* contours;
 
@@ -219,11 +133,11 @@ void idle()
 		);
 
 		CvRect r = cvBoundingRect(result);
-		if (r.height < 10 || r.width < 10 || r.height >= iplGrabbed->height - 10 || r.width >= iplGrabbed->width - 10) {
+		if (r.height < MIN || r.width < MIN || r.height >= iplGrabbed->height - 10 || r.width >= iplGrabbed->width - 10) {
 			continue;
 		}
 
-		if (result->total==4)
+		if (result->total==4) // rectangle
 		{
 			int count = 4;
 			CvPoint *rect = new CvPoint[4];
@@ -375,7 +289,7 @@ void idle()
 					{
 						IplImage* iplTmp = cvCreateImage( cvSize(100,300), IPL_DEPTH_8U, 1 );
 						cvResize( iplStripe, iplTmp, CV_INTER_NN );
-						cvShowImage ( "Exercise 8 - Stripe", iplTmp );//iplStripe );
+						cvShowImage ( "Stripe", iplTmp );//iplStripe );
 						cvReleaseImage( &iplTmp );
 						isFirstStripe = false;
 					}
@@ -446,11 +360,12 @@ void idle()
 
 			// resultMatrix_005A made global variable
 
+			int i;
 			CvPoint2D32f targetCorners[4];
 			targetCorners[0].x = -0.5; targetCorners[0].y = -0.5;
-			targetCorners[1].x =  5.5; targetCorners[1].y = -0.5;
-			targetCorners[2].x =  5.5; targetCorners[2].y =  5.5;
-			targetCorners[3].x = -0.5; targetCorners[3].y =  5.5;
+			targetCorners[1].x =  S+.5; targetCorners[1].y = -0.5;
+			targetCorners[2].x =  S+.5; targetCorners[2].y =  S+.5;
+			targetCorners[3].x = -0.5; targetCorners[3].y =  S+.5;
 
 			//create and calculate the matrix of perspective transform
 			CvMat* projMat = cvCreateMat (3, 3, CV_32F );
@@ -458,16 +373,21 @@ void idle()
 
 			//create image for the marker
 			CvSize markerSize;
-			markerSize.width  = 6;
-			markerSize.height = 6;
+			markerSize.width  = S;
+			markerSize.height = S;
 			IplImage* iplMarker = cvCreateImage( markerSize, IPL_DEPTH_8U, 1 );
 
 			//change the perspective in the marker image using the previously calculated matrix
 			cvWarpPerspective(iplConverted, iplMarker, projMat, CV_WARP_FILL_OUTLIERS,  cvScalarAll(0));
 			
+			//cvConvertImage(iplMarker, iplMarker, 0);
 			cvThreshold(iplMarker, iplMarker, bw_thresh, 255, CV_THRESH_BINARY);
+			cvShowImage ( "Marker", iplMarker );
 
-//now we have a B/W image of a supposed Marker
+
+
+
+			//now we have a B/W image of a supposed Marker
 
 			// check if border is black
 			int code = 0;
@@ -486,6 +406,7 @@ void idle()
 
 			if ( code < 0 ) continue;
 
+			/*
 			//copy the BW values into cP
 			int cP[4][4];
 			for ( int i=0; i < 4; ++i)
@@ -518,37 +439,6 @@ void idle()
 				codes[3] |= cP[col][3-row]; // 270°
 			}
 
-			if ( (codes[0]==0) || (codes[0]==0xffff) )
-				continue;
-
-			//account for symmetry
-			code = codes[0];
-			int angle = 0;
-			for ( int i=1; i<4; ++i )
-			{
-				if ( codes[i] < code )
-				{
-					code = codes[i];
-					angle = i;
-				}
-			}
-
-			//correct order of corners
-			if(angle != 0)
-			{
-				CvPoint2D32f corrected_corners[4];
-				for(int i = 0; i < 4; i++)	corrected_corners[(i + angle)%4] = corners[i];
-				for(int i = 0; i < 4; i++)	corners[i] = corrected_corners[i];
-			}
-
-		//	printf ("Found: %04x\n", code);
-
-			if ( isFirstMarker )
-			{
-				cvShowImage ( "Marker", iplMarker );
-				isFirstMarker = false;
-			}
-
 			// transfer camera coords to screen coords
 			for(int i = 0; i<4; i++)
 			{
@@ -556,27 +446,8 @@ void idle()
 				corners[i].y = -corners[i].y + height/2;
 			}
 			
-// Added in Exercise 9 - Start *****************************************************************
 			if(code == 0x005a) estimateSquarePose( resultMatrix_005A, corners, 0.045 );
 			else if(code == 0x0272) estimateSquarePose( resultMatrix_0272, corners, 0.045 );
-// Added in Exercise 9 - End *****************************************************************
-
-			/*
-				for (int i = 0; i<4; ++i) {
-					for (int j = 0; j<4; ++j) {
-						cout << setw(6);
-						cout << setprecision(4);
-						cout << resultMatrix_005A[4*i+j] << " ";
-					}
-					cout << "\n";
-				}
-				cout << "\n";
-				float x,y,z;
-				x = resultMatrix_005A[3];
-				y = resultMatrix_005A[7];
-				z = resultMatrix_005A[11];
-				cout << "length: " << sqrt(x*x+y*y+z*z) << "\n";
-				cout << "\n";
 			*/
 
 			cvReleaseMat (&projMat);
@@ -585,25 +456,20 @@ void idle()
 		} // end of if(result->total == 4)
 	} // end of loop over contours
 
-	cvShowImage("Exercise 8 - Original Image", iplGrabbed);
-	cvShowImage("Exercise 8 - Converted Image", iplThreshold);
+	cvShowImage("Original Image", iplGrabbed);
+	cvShowImage("Converted Image", iplThreshold);
 
 	int key = cvWaitKey (10);
 	if (key == 27) exit(0);
-// Added in Exercise 9 - Start *****************************************************************
 	else if (key == 100) debugmode = !debugmode;
-	else if (key == 98) balldebug = !balldebug;
-// Added in Exercise 9 - End *****************************************************************
 
 	isFirstStripe = true;
-
 	isFirstMarker = true;
 
 	cvReleaseImage (&iplConverted);
 	cvReleaseImage (&iplThreshold);
 
 	cvClearMemStorage ( memStorage );
-	glutPostRedisplay();
 }
 
 void cleanup() 
@@ -611,192 +477,24 @@ void cleanup()
 	cvReleaseMemStorage (&memStorage);
 
 	cvReleaseCapture (&cap);
-	cvDestroyWindow ("Exercise 8 - Original Image");
-	cvDestroyWindow ("Exercise 8 - Converted Image");
-	cvDestroyWindow ("Exercise 8 - Stripe");
+	cvDestroyWindow ("Original Image");
+	cvDestroyWindow ("Converted Image");
+	cvDestroyWindow ("Stripe");
 	cvDestroyWindow ("Marker");
 	cout << "Finished\n";
-}
-
-// Added in Exercise 9 - Start *****************************************************************
-void drawSnowman( bool female )
-{
-	glRotatef( -90, 1, 0, 0 );
-	glScalef(0.03, 0.03, 0.03);
-
-	// draw 3 white spheres
-	glColor4f( 1.0, 1.0, 1.0, 1.0 );
-	glutSolidSphere( 0.8, 10, 10 );
-	glTranslatef( 0.0, 0.8, 0.0 );
-	glutSolidSphere( 0.6, 10, 10 );
-	if(female)
-	{
-		glPushMatrix();
-		glRotatef(90, 0, 1, 0);
-		glTranslatef(-0.2, 0.05, 0.3);
-		glutSolidSphere(0.32, 10, 10);
-		glTranslatef(0.4, 0, 0);
-		glutSolidSphere(0.32, 10, 10);
-		glPopMatrix();
-	}
-	glTranslatef( 0.0, 0.6, 0.0 );
-	glutSolidSphere( 0.4, 10, 10 );
-
-	// draw the eyes
-	glPushMatrix();
-	glColor4f( 0.0, 0.0, 0.0, 1.0 );
-	glTranslatef( 0.2, 0.2, 0.2 );
-	glutSolidSphere( 0.066, 10, 10 );
-	glTranslatef( 0, 0, -0.4 );
-	glutSolidSphere( 0.066, 10, 10 );
-	glPopMatrix();
-
-	// draw a nose
-	glColor4f( 1.0, 0.5, 0.0, 1.0 );
-	glTranslatef( 0.3, 0.0, 0.0 );
-	glRotatef( 90, 0, 1, 0 );
-	glutSolidCone( 0.1, 0.3, 10, 1 );
-}
-// Added in Exercise 9 - End *****************************************************************
-
-void display() 
-{
-	// clear buffers
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-	// draw background image
-	glDisable( GL_DEPTH_TEST );
-
-	glMatrixMode( GL_PROJECTION );
-	glPushMatrix();
-	glLoadIdentity();
-	gluOrtho2D( 0.0, width, 0.0, height );
-
-	glRasterPos2i( 0, height-1 );
-	glDrawPixels( width, height, GL_BGR_EXT, GL_UNSIGNED_BYTE, bkgnd );
-
-	glPopMatrix();
-
-	glEnable(GL_DEPTH_TEST);
-
-	// move to origin
-	glMatrixMode( GL_MODELVIEW );
-	
-	for (int x=0; x<4; ++x)
-		for (int y=0; y<4; ++y)
-			resultTransposedMatrix[x*4+y] = resultMatrix_005A[y*4+x];
-
-	glLoadMatrixf( resultTransposedMatrix );
-// Added in Exercise 9 - Start *****************************************************************
-	rotateToMarker(resultMatrix_005A, resultMatrix_0272, 0x005a);
-
-	drawSnowman( 0 );
-
-	for (int x=0; x<4; ++x)
-		for (int y=0; y<4; ++y)
-			resultTransposedMatrix[x*4+y] = resultMatrix_0272[y*4+x];
-
-	glLoadMatrixf( resultTransposedMatrix );
-	
-	rotateToMarker(resultMatrix_0272, resultMatrix_005A, 0x0272);
-
-	drawSnowman( 1 );
-
-	//drawBall
-	glLoadIdentity();
-	glTranslatef(ballpos.x, ballpos.y + 0.024, ballpos.z);
-	glColor4f(1,0,0,1);
-	glutSolidSphere(0.005, 10, 10);
-// Added in Exercise 9 - End *****************************************************************
-
-	// redraw
-	glutSwapBuffers();
-}
-
-void resize( int w, int h) 
-{
-//    width = w;
-  //  height = h;
-
-	// set a whole-window viewport
-	glViewport( 0, 0, width, height );
-
-	// create a perspective projection matrix
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	// Note: Just setting the Perspective is an easy hack. In fact, the camera should be calibrated.
-	// With such a calibration we would get the projection matrix. This matrix could then be loaded 
-	// to GL_PROJECTION.
-	// If you are using another camera (which you'll do in most cases), you'll have to adjust the FOV
-	// value. How? Fiddle around: Move Marker to edge of display and check if you have to increase or 
-	// decrease.
-	gluPerspective( camangle, ((double)width/(double)height), 0.01, 100 );
-
-	// invalidate display
-	glutPostRedisplay();
 }
 
 int main(int argc, char* argv[]) 
 {
 	cout << "Startup\n";
-
-	// initialize the window system
-	glutInit( &argc, argv );
-	glutInitWindowSize( width, height );
-	glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH );
-	glutCreateWindow("AR Exercise 8 - Combine");
-
-	// initialize the GL library
-
-	// pixel storage/packing stuff
-	glPixelStorei( GL_PACK_ALIGNMENT,   1 );
-	glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
-	glPixelZoom( 1.0, -1.0 );
-
-	// enable and set colors
-	glEnable( GL_COLOR_MATERIAL );
-	glClearColor( 0, 0, 0, 1.0 );
-
-	// enable and set depth parameters
-	glEnable( GL_DEPTH_TEST );
-	glClearDepth( 1.0 );
-
-	// light parameters
-	GLfloat light_pos[] = { 1.0, 1.0, 1.0, 0.0 };
-	GLfloat light_amb[] = { 0.2, 0.2, 0.2, 1.0 };
-	GLfloat light_dif[] = { 0.7, 0.7, 0.7, 1.0 };
-
-	// enable lighting
-	glLightfv( GL_LIGHT0, GL_POSITION, light_pos );
-	glLightfv( GL_LIGHT0, GL_AMBIENT,  light_amb );
-	glLightfv( GL_LIGHT0, GL_DIFFUSE,  light_dif );
-	glEnable( GL_LIGHTING );
-	glEnable( GL_LIGHT0 );
-
-	// make functions known to GLUT
-	glutDisplayFunc( display );
-	glutReshapeFunc( resize  );
-	glutIdleFunc( idle );
-
 	// setup OpenCV
 	init();
 
-	// for tracker debugging...
-	//while (1) idle();
-
-// Added in Exercise 9 - Start *****************************************************************
-	std::cout << glGetString(GL_VENDOR) << std::endl;
-	std::cout << glGetString(GL_RENDERER) << std::endl;
-	std::cout << glGetString(GL_VERSION) << std::endl;
-//	std::cout << glGetString(GL_EXTENSIONS) << std::endl;
-	std::cout << "Press 'd' for printing debug information. Press 'b' for ball debug information." << std::endl;
-// Added in Exercise 9 - End *****************************************************************
-
-	// start the action
-	glutMainLoop();
+	while (1){
+		Sleep(10);
+		idle();
+	}
+	cleanup();
   
 	return 0;
 }
