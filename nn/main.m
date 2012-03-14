@@ -12,8 +12,8 @@ if exist(cache)
 else
     fprintf('Loading generated images...\n')
     [X,y] = processImages(data_folder);
-    % save("-binary", cache, "X", "y");
-    save(cache, "X", "y");
+    save("-binary", cache, "X", "y");
+    % save(cache, "X", "y");
 endif
 X(:,size(X,2)+1) = y;
 
@@ -57,7 +57,7 @@ for i = 0:number_of_sets-1
 		printf('\n=== svm in iteration %i\n', i);
 		% svm
 		t=cputime;
-		model = svmtrain(y_train, X_train, "-q -c 1 -t 2");
+		model = svmtrain(y_train, X_train, sprintf("-q -c %i -t 2", lambda));
 		cpu_time_svm += cputime-t;
 		%printf('Total cpu time for training: %f seconds\n', cputime-t);
 		fprintf('Test Set Accuracy (SVM): ');
