@@ -6,6 +6,7 @@ if !exist('config.mat')
 endif
 load('config.mat');
 lambda, maxIter, gamma
+fprintf('The following models will be added/overwritten:\n')
 use_nn, use_svm, use_lr
 if exist(models_file)
     load(models_file);
@@ -32,6 +33,7 @@ else
     %save(cache, "X", "y");
 endif
 X(:,size(X,2)+1) = y;
+n_samples = length(y)
 
 % mix row indexes
 all_indexed_mixed = randperm(size(X,1));
@@ -42,7 +44,7 @@ average_accuracy_log_reg = 0;
 cpu_time_nn = 0;
 cpu_time_svm = 0;
 cpu_time_lr = 0;
-number_of_sets = ceil(length(y)/set_size)
+set_size = ceil(length(y)/number_of_sets)
 
 if (do_cross_validation)
 	loops = number_of_sets-1;
@@ -65,11 +67,11 @@ for i = 0:loops
 		printf('\n=== neural network in iteration %i\n', i);
 		% neural network
 		t=cputime;
-		[Theta1, Theta2] = train(X_train,y_train);
+		[Theta1, Theta2] = nnTrain(X_train, y_train, lambda(1), maxIter);
 		cpu_time_nn += cputime-t;
 		%printf('Total cpu time for training: %f seconds\n', cputime-t);
 		% accuracy when predicting values of test set
-		pred = predictNN(Theta1, Theta2, X_val);
+		pred = nnPredict(Theta1, Theta2, X_val);
 		acc = mean(double(pred == y_val))*100;
 		fprintf('Test Set Accuracy (Neural Network): %f\n', acc);
 		average_accuracy += length(y_val)*acc;
@@ -79,7 +81,7 @@ for i = 0:loops
 		printf('\n=== svm in iteration %i\n', i);
 		% svm
 		t=cputime;
-		model = svmtrain(y_train, X_train, sprintf("-q -c %f -t 2 -g %f", lambda, gamma));
+		model = svmtrain(y_train, X_train, sprintf("-q -c %f -t 2 -g %f", lambda(2), gamma));
 		cpu_time_svm += cputime-t;
 		%printf('Total cpu time for training: %f seconds\n', cputime-t);
 		fprintf('Test Set Accuracy (SVM): ');
@@ -91,10 +93,10 @@ for i = 0:loops
 		printf('\n=== logistic regression in iteration %i\n', i);
 		% logistic regression
 		t=cputime;
-		Theta = logReg(X_train,y_train);
+		Theta = logRegTrain(X_train,y_train, lambda(3), maxIter);
 		cpu_time_lr += cputime-t;
 		%printf('Total cpu time for training: %f seconds\n', cputime-t);
-		p = predictLogReg(Theta,X_val);
+		p = logRegPredict(Theta,X_val);
 		acc = mean(double(p == y_val))*100;
 		fprintf('Test Set Accuracy (log reg): %f\n', acc);
 		average_accuracy_log_reg += length(y_val)*acc;

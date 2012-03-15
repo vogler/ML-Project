@@ -1,4 +1,4 @@
-function theta = logReg (X,y)
+function theta = logRegTrain(X, y, _lambda, _maxIter)
 	load('config.mat');
 	
 	% Some useful variables
@@ -20,14 +20,14 @@ function theta = logReg (X,y)
 	initial_theta = zeros(n+1, 1);
 
 	% Set regularization parameter lambda to 1 (you should vary this)
-	lambda = 1;
+	% lambda = 1;
 
 	% Set Options
-	options = optimset('GradObj', 'on', 'MaxIter', maxIter);	
+	options = optimset('GradObj', 'on', 'MaxIter', _maxIter);	
 
 	for i=1:9
 		printf("logistic regression for label %i: \n", i);
-		theta(:,i) = fmincg (@(t)(costFunctionReg(t, X, (y == i), lambda)), initial_theta, options);
+		theta(:,i) = fmincg (@(t)(costFunctionReg(t, X, (y == i), _lambda)), initial_theta, options);
 	end
 end
 

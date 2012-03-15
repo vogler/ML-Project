@@ -1,4 +1,4 @@
-function [Theta1, Theta2] = train(X, y)
+function [Theta1, Theta2] = nnTrain(X, y, _lambda, _maxIter)
 	load('config.mat');
 	
 	m = size(X, 1);
@@ -22,15 +22,15 @@ function [Theta1, Theta2] = train(X, y)
 	fprintf('Training Neural Network (Backpropagation)...\n');
 
 	% Iterations
-	options = optimset('MaxIter', maxIter);
+	options = optimset('MaxIter', _maxIter);
 
-	fprintf('Using lambda=%f for regularization\n', lambda)
+	fprintf('Using lambda=%f for regularization\n', _lambda)
 
 	% Create "short hand" for the cost function to be minimized
 	costFunction = @(p) nnCostFunction(p, ...
 									   input_layer_size, ...
 									   hidden_layer_size, ...
-									   num_labels, X, y, lambda);
+									   num_labels, X, y, _lambda);
 
 	% Now, costFunction is a function that takes in only one argument (the
 	% neural network parameters)
