@@ -44,7 +44,6 @@ def prediction(name, value=[]):
     if len(pred):
         acc = checkAccuracy(pred)
         if acc > bestacc:
-            print 'better', bestp, name, bestacc, acc
             bestacc = acc
             bestp = name
     print
