@@ -10,30 +10,35 @@ figure;
 %hold on;
 %hold off;
 
-C = [2^-5,  2^-3,  2^-1,  2^1,  2^3,  2^5,  2^7,  2^9,  2^11, 2^13];
-g = [2^-15, 2^-13, 2^-11, 2^-9, 2^-7, 2^-5, 2^-3, 2^-1, 2^1,  2^3];
+%C = [2^-5,  2^-3,  2^-1,  2^1,  2^3,  2^5,  2^7,  2^9,  2^11, 2^13];
+%g = [2^-15, 2^-13, 2^-11, 2^-9, 2^-7, 2^-5, 2^-3, 2^-1, 2^1,  2^3];
 for i=1:length(C)
 	C(i) = log2(C(i));
 	g(i) = log2(g(i));
 end
 % plot(C,g,'rx','MarkerSize', 5);
 
+% values in acc were added by iterating through C and iterating through g in an inner loop
+% thus, the first length(C) values are for C(1) and g(1)-g(length(g))
+[X,Y] = meshgrid(C,g);	% X has same C values in one column, Y has same g values in row
+% so we can just reshape the acc vector because it will iteratively fill the columns
+acc = reshape(acc, length(C), length(g));
+
 % generating sample data
-acc = rand(1,length(C)*length(C));
-acc = reshape(acc,length(C),length(C));
-acc *= 100;
-for i=1:size(acc,1)
-	for j=1:size(acc,2)
-		if (i < 4 || i>6 || j<4 || j>6)
-			acc(i,j) = max([20, acc(i,j)-40]);
-		else
-			acc(i,j) = min([80, acc(i,j)+40]);
-		endif
-	end
-end
+%acc = rand(1,length(C)*length(C));
+%acc = reshape(acc,length(C),length(C));
+%acc *= 100;
+%for i=1:size(acc,1)
+%	for j=1:size(acc,2)
+%		if (i < 4 || i>6 || j<4 || j>6)
+%			acc(i,j) = max([20, acc(i,j)-40]);
+%		else
+%			acc(i,j) = min([80, acc(i,j)+40]);
+%		endif
+%	end
+%end
 
 % interpolating with spline to get a smooth shaped plot of the function
-[X,Y] = meshgrid(C,g);
 [XI,YI] = meshgrid(min(C)-1:0.25:max(C)+1, min(g)-1:0.25:max(g)+1);
 ZI = interp2(X,Y,acc,XI,YI,'spline');
 %mesh(C,g,acc), hold, mesh(XI,YI,ZI);
