@@ -1,0 +1,415 @@
+commit 5019263bfb58761434ba9cf7f00412a80cbb8ce6
+Author: vogler <ralf.vogler@gmail.com>
+
+    parameter testing
+
+commit 2cc31a29f8c8b109ca628eebd814aeeee8531aac
+Author: vogler <ralf.vogler@gmail.com>
+
+    validation with concrete Sudoku
+
+commit deb4ccf241f7b9d22c806184d41b5bb89bb95239
+Merge: de0a7ac f7440b2
+Author: vogler <ralf.vogler@gmail.com>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+
+commit de0a7ac9e0f9b06ceeaf51dd5d5bf14ebde3cdf5
+Author: vogler <ralf.vogler@gmail.com>
+
+    use full resolution of captured image instead of scaling down immediately
+
+commit f7440b2ca18be09dff9540f259296975420763a6
+Merge: 3859bdc 9736300
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+
+commit 3859bdc472bdaad8df7604ae71d55fb0b6d31715
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    - added examples to doc
+    
+    - added nn to doc
+    - added comment in config
+
+commit 9736300b560844f41d617618d45d7729e685509c
+Author: vogler <ralf.vogler@gmail.com>
+
+    trying to improve image processing and data-gen
+
+commit b448c2ca5b656ff61d542445dc707f162fce7910
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    fix
+
+commit f28e470a892db8d6b0471dfd8038dab129103fea
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    added nn-predict to predict values based on a net trained with pybrain
+
+commit 6d6e1f4d12e5d42b49d7d2bab384cc914b26e4e0
+Author: vogler <ralf.vogler@gmail.com>
+
+    gen-data.py: switch for random/concrete
+
+commit d23781ef790237c8d36c7267c53b116f96cea45a
+Merge: 36ce5b0 992eae4
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+
+commit 992eae4ff514f7c96da2a3860051275c33922e6c
+Author: vogler <ralf.vogler@gmail.com>
+
+    cv.exe
+
+commit e724979081aae3b7d88f120f883f44b84d2a116a
+Author: vogler <ralf.vogler@gmail.com>
+
+    predict classes of processed fields
+
+commit 36ce5b0ee964a3dd7fe519d160eb22e4d58bd078
+Merge: a33632d e2a3f59
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+
+commit e2a3f599812ce6184ea31da8c557f3ef779e5c01
+Merge: a9f628d a785f49
+Author: vogler <ralf.vogler@gmail.com>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+
+commit a9f628d670d7980704b8e14b6f2955a4b8b41c1f
+Author: vogler <ralf.vogler@gmail.com>
+
+    CV folder including dlls and exe (copied from ML-Sudoku/debug)
+
+commit a33632d501ff4ee88d5fff736782b0731048e43f
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    fixes
+
+commit a785f494c750112a60922e8513d973c7d7d46b8a
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    moved overview diagram to doc folder
+
+commit e77a53d215f3137609278a5718a718d45c337201
+Author: vogler <ralf.vogler@gmail.com>
+
+    renamed nn to octave, again ;)
+
+commit 927085da87f2a6e61231d49d01bed46ddc7bbdfc
+Merge: f5d9ef4 fdcf185
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+
+commit f5d9ef41d88e26f423ecf8c9e3e6959b77dda082
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    save field vector when processing input
+
+commit fdcf18505399b9ff67c2c6ab9d50efa09dfbb0bb
+Author: vogler <ralf.vogler@gmail.com>
+
+    ignore *mat
+    
+    run.bat
+
+commit 571593d5900059832e67aa66ccbff1acc0c0e6c8
+Merge: a85eb56 e973642
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+
+commit a85eb56b21b17c8c15f24a17d31a121b4b69d9ea
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    - octave file for processing sudoku input images and predict values
+    
+    - python script for handling input processing, prediction, and solving (todo)
+    -
+
+commit e9736421935c14d0e18427cb5c1531ffc8031f70
+Author: vogler <ralf.vogler@gmail.com>
+
+    run-solver
+
+commit 3de3f4e56cfd165a21fef84478a0a7d180e6c5b7
+Author: vogler <ralf.vogler@gmail.com>
+
+    Python script to split image into fields
+    
+    > seed fill in corners to eliminate borders
+
+commit 2246712b0353b6b3a2bbe8e84695fdc5f99281a7
+Author: vogler <ralf.vogler@gmail.com>
+
+    update batch files
+
+commit 01463fe1a10d8ee49362c51af805f083648c7363
+Merge: 48807a2 f0ef6ac
+Author: vogler <ralf.vogler@gmail.com>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+
+commit 48807a20c3dc268ccfc254c591f4c7651a5015a9
+Author: vogler <ralf.vogler@gmail.com>
+
+    CV: debug mode, rotate image
+
+commit f0ef6ac903ea32c3aec4cc8bc6e662b498a9242f
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    - lambda and maxIter can be passed to config function
+    
+    - nn.py uses maxIter from config
+
+commit 3433f88fcfce1f75dc15151ed152e001b1060784
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    added overview image for doc
+
+commit 0eef394d2e7c24c56a5be4b58879bd3c79591196
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    - python nn uses values from config.m
+    
+    - added some text and overview image to docu
+
+commit b3cde72ad61daa9a8bdeff792ac4135a36cbe996
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    fixed config
+
+commit 9ee32d301db7fd9da0db3cf6b1e0363388ef8403
+Merge: 3eb2fb0 76a8446
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+    
+    Conflicts:
+    	nn.py
+    	nn/config.m
+
+commit 3eb2fb06d9bf430caa32e5506a90460e247eb448
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    - nn with pybrain
+    
+    - overview diagram
+    - results/parameters from training are saved in models.mat
+    - predict uses the models.mat file to predict outcome
+
+commit 76a84463356303f2060b4a6b766daa9699a9780e
+Author: vogler <ralf.vogler@gmail.com>
+
+    CV: cleanup: removed gl & glut
+
+commit 168370a3525133e4403257e1f5807b4da8bfc01e
+Author: vogler <ralf.vogler@gmail.com>
+
+    Neural Network with pyBrain
+    
+    images less random
+
+commit 251dd25e9b28fa43a3f5acf46c658f2570416cda
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    added python nn file and changed config file format to be matlab compatible
+
+commit 93e0f96d06ee9e69e2c5c6c75bb723d9e9c76518
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    num_labels fixed, saving data file with -mat-binary
+
+commit 13d9e6c3f73005b84b90d82dfab4bdb79235653b
+Merge: 13a4ef8 8e11caf
+Author: vogler <ralf.vogler@gmail.com>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+
+commit 13a4ef82b0fd5ad3e10672de9bbe98a7a388f35d
+Author: vogler <ralf.vogler@gmail.com>
+
+    copied latex template
+
+commit 8e11caf9779674dabe9b1fa1217b2b1cb13948ed
+Merge: f04714c 898eb0a
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+
+commit f04714cbdbc4d67577d962b0a1e82772bbf3cd0b
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    added excel table for evaluation of different runs
+
+commit 898eb0a3c3a831e8bbeeefc6685e4c5b7ea1ac3a
+Author: vogler <ralf.vogler@gmail.com>
+
+    latex template
+
+commit 957fb0c58d15f8f86805f8abdecfc7e65d2088e3
+Author: vogler <ralf.vogler@gmail.com>
+
+    added lambda for svm, config.mat and latex-files in gitignore
+
+commit 0f7f3f3da09a55c4203987a85348da19f92c9ef4
+Author: vogler <ralf.vogler@gmail.com>
+
+    more samples and cache
+
+commit f55b9942151da54b6d2068043bb7e94bb05d1eb3
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    counting cpu time spent for training
+
+commit 5073b038b973b5e295b619f2644276cb53cd8181
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    logistic regression added
+
+commit 6e37cbbaf83116b8ae52cc398692b01e1ed1a3fd
+Author: vogler <ralf.vogler@gmail.com>
+
+    randomize position
+
+commit cb150c1ad83bfe6b0892f375186dee909ad3bdcd
+Merge: d86756b 000d2ee
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+
+commit d86756bb84d6818241163444323f8d0d6f6c4e6b
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    flags in config to activate different learning methods
+
+commit 000d2eed305080dd06c640543c8b9a8b10b87128
+Author: vogler <ralf.vogler@gmail.com>
+
+    gen-data.py: rotate images
+    
+    moved libsvm, use mex-files
+
+commit cf12c80a6c5646528d330bb10b9fab06b8033b8a
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    added libsvm and svm training
+
+commit 27d0dc1069c64526c212ea5d08303982d80b6c27
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    fixed average accuracy
+
+commit 326bc534848bdfe24c2da819857fe7be6882f394
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    fixed
+
+commit 4be138841fe83db53ad48dda224dd87cd6caef1f
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    - settings are defined in config.m
+    
+    - network training function now in train.m
+    - main splits training set in k parts and performs k-fold cross-validation
+
+commit 356c1d13cf6b83579fb41d3d445ba0e9066358d4
+Merge: a71a6f0 f63fd1c
+Author: vogler <ralf.vogler@gmail.com>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+    
+    Conflicts:
+    	run-nn.bat
+
+commit a71a6f08f1c3dea0f698a2a68d3aab845efa7aca
+Author: vogler <ralf.vogler@gmail.com>
+
+    batch scripts
+
+commit f63fd1c655acd3c16e88d73e270c1209dfb6d251
+Author: vogler <ralf.vogler@gmail.com>
+
+    batch scripts
+
+commit 0e7d499a5a8cdf314a81209cd9081cacd59ce877
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    comments fixed
+
+commit 923c48f7971942e1364b82f7c332f194364654a4
+Author: vogler <ralf.vogler@gmail.com>
+
+    Cleanup and settings
+
+commit abd8618dc48235ef01be082151c069d71b145355
+Author: vogler <ralf.vogler@gmail.com>
+
+    Cleanup and settings
+
+commit 511dcabd5023fbe1fa15bcd590fb5e5c429801ef
+Author: vogler <ralf.vogler@gmail.com>
+
+    now using generated images
+
+commit b4b580c83e0e4b9af7a4a8a251726dd415a00a00
+Author: vogler <ralf.vogler@gmail.com>
+
+    generate rgb instead of rgba-images -> 3 instead of 2 dimensions
+    
+    cast image values from int32 to double before division by 255!
+
+commit bb9a86b09f6ea36f679ad250eac22b0cf6b88bee
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    iterate through 3rd dimension based on length
+
+commit f29fd6453b04159c00d531d7a4374633375e07ee
+Merge: 5c834b8 34655be
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+    
+    Conflicts:
+    	ML-Sudoku/ML Project.sdf
+
+commit 5c834b8b26190a9d3888d88937087a99e2202458
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    hmm
+
+commit 34655be6aeb03905d3a5f790b6a9ad1fe98249f9
+Author: vogler <ralf.vogler@gmail.com>
+
+    ignore Visual Studio's sdf-Files
+
+commit 3313410566b53963b41886918adf4c0f104fbd58
+Author: vogler <ralf.vogler@gmail.com>
+
+    generate random images of numbers
+
+commit 69d224d07f5f255b1c3b0f1b5517d6a66a6664a3
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    transforming images to matrix and vector (matrix contains gray scale image values in each row, vector row is the corresponding number)
+
+commit 9ad46cd9d9468c30ac777991cb048e49b0a3a145
+Author: vogler <ralf.vogler@gmail.com>
+
+    Visual Studio 2010, Git Extensions Setup
+
+commit e950d18cf89529a4038aec5f005fc54307902d46
+Author: Ralf Vogler <ralf.vogler@gmail.com>
+
+    base
+
+commit 0a15e04c08734cd602f41adef8f4ee9428164622
+Author: Ralf Vogler <ralf.vogler@gmail.com>
+
+    init
