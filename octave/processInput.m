@@ -7,6 +7,7 @@ X = []; % matrix to store the image vectors
 field = []; % vector that stores the corresponding sudoku field of a row in X matrix
 
 files = glob(sprintf('%s%s', path, '*.png'));
+
 for x=1:length(files)
 	if(!isdir(files{x}))
 		rgbImg = imread(files{x});

@@ -1,1 +1,1 @@
-python gen-data.py
+python genData.py

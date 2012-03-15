@@ -5,11 +5,11 @@ function [pNN, pSVM, pLR] = predict(X)
 	pLR = ones(m,1)*(-1);
 	load('config.mat');
 	load(models_file);
-	
+
 	
 	if (exist("Theta1") && exist("Theta2"))
 		% predict with NN
-		pNN = predictNN(Theta1, Theta2, X);
+		pNN = nnPredict(Theta1, Theta2, X);
 	endif
 	if (exist("model"))
 		% predict with SVM		
@@ -18,7 +18,7 @@ function [pNN, pSVM, pLR] = predict(X)
 		[pSVM,_,_] = svmpredict(ones(m,1),X,model);
 	endif
 	if (exist("Theta"))
-		pLR = predictLogReg(Theta,X);
+		pLR = logRegPredict(Theta,X);
 	endif
     
     % test: show images and predicted class

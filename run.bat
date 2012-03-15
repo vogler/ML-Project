@@ -14,7 +14,7 @@ cv.exe
 popd
 
 echo 4. split image into fields and postprocess
-python split-image.py
+python splitImage.py
 
 echo 5. predict class for each field using trained neural network in octave and call solver
 python processAndPredict.py

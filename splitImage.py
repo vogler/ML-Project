@@ -3,7 +3,7 @@ import random, os, shutil
 
 input = 'cv/sudoku.png'
 out = 'input/'
-tmp = out+'tmp/'
+tmp = out+'all/'
 targetsize = 20
 m = 0
 threshold = 250 # brighter fields are empty
