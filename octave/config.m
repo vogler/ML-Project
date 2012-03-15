@@ -19,8 +19,8 @@ function config (lambda=0.01, maxIter=100, gamma=1)
 	set_size = 1125;		  % size of the k sets
 	do_cross_validation = false; % if set to false we train only one time (no cross validation)
 	
-	use_nn = false;
-	use_svm = true;
+	use_nn = true;
+	use_svm = false;
 	use_lr = false;
 	
 	save("-mat-binary", "config.mat");

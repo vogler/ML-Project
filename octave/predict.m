@@ -20,8 +20,18 @@ function [pNN, pSVM, pLR] = predict(X)
 	if (exist("Theta"))
 		pLR = predictLogReg(Theta,X);
 	endif
-	pNN
-	pSVM
-	pLR
+    
+    % test: show images and predicted class
+    if(false)
+        p = pSVM;
+        for i=1:m
+            imshow(reshape(X(i,:), 20, 20));
+            p(i)
+            pause
+        end
+    endif
+	% pNN
+	% pSVM
+	% pLR
 	%printf("predicted values (-1 means that model was not trained):\n  NN: %d\n  SVM: %d\n  LR: %d\n", pNN, pSVM, pLR);
 end
