@@ -75,8 +75,7 @@
 The goal of this work is to implement number recognition for a Soduko solver.
 First we will describe the generation of synthetic data, in this case labelled images of numbers.
 Then we compare different machine learning techniques for supervised learning using the generated data.
-Once the training is complete, images of real Sudokus are captured using the webcam.
-The different methods then try to correctly predict each number.
+Once the training is complete, images of real Sudokus are captured using a webcam and preprocessed to be predicted by the learned models. We evaluate the different approaches by analyzing their performance on different data sets.
 \end{abstract}
 
 \section{Introduction}
@@ -96,12 +95,12 @@ These images are preprocessed (applying greyscale) by an octave script and writt
 	\caption{Overview}
 	\label{fig:overview}
 \end{figure}
-The input matrix $X^{n\text{x}400}$ and the target vector $y$ are the inputs for training NN, SVM and LR, as described in Section \ref{training}. After training, the learned models/parameters are saved in ``.mat'' files that can be loaded by the number prediction. The other input for number prediction is an input matrix of the same form as $X$ with a row entry for each Sudoku field that was detected to contain a number. This implies that we do not train our models to detect empty fields. We could reliably detect empty fields by performing some preprocessing steps on the images (filling borders, adjusting thresholds etc.) thus applying a machine learning technique does not seem appropriate for this task.
+The input matrix $X^{n\text{x}400}$ and the target vector $y$ are the inputs for training NN, SVM and LR, as described in Section \ref{training}. After training, the learned models/parameters are saved in ``.mat'' files that can be loaded by the number prediction. The other input for number prediction is an input matrix of the same form as $X$ with a row entry for each Sudoku field that was detected to contain a number. This implies that we do not train our models to detect empty fields. We could detect empty fields with high accuracy by performing some preprocessing steps on the images (filling borders, adjusting thresholds etc.) thus applying a machine learning technique does not seem appropriate for this task.
 
 \section{Training}
 \label{training}
 \subsection{Neural Network}
-Applying a NN seems promising as it was already successfully applied to the quite similar problem of detecting handwritten digits. \color{red}ref!\color{black} For the NN we choose a simple architecture with 25 hidden sigmoidal units (+ bias unit), as shown in figure \ref{fig:nn}. The size of the input layer is 400 (given by the 20 x 20 pixel images) and the size of the output layer is defined by the number of classes, in this case the numbers 1 to 9. This simple architecture turned out to perform pretty well compared to more complex ones with a higher number of hidden layers. Training is performed with error backpropagation, thus minimizing the error function
+Applying a NN seems promising as it was already successfully applied to the quite similar problem of detecting handwritten digits.\footnote{http://www.ml-class.org} For the NN we choose a simple architecture with 25 hidden sigmoidal units (+ bias unit), as shown in figure \ref{fig:nn}. The size of the input layer is 400 (given by the 20 x 20 pixel images) and the size of the output layer is defined by the number of classes, in this case the numbers 1 to 9. This simple architecture turned out to perform pretty well compared to more complex ones with a higher number of hidden layers. Training is performed with error backpropagation, thus minimizing the error function
 \begin{align*}
 & E(w) = \sum_{n=1}^N E_n(w)\\
 \text{with}~~E&_n(w) = \frac{1}{2}\sum_k (y_{nk}-t_{nk})\\
@@ -122,7 +121,7 @@ The next technique we apply to the discussed problem are Support Vector Machines
 \text{subject to } &~~ y_i(w^T \phi(x_i) + b) - 1 + \xi_i \ge 0\\
 \text{and} &~~ \xi_i \ge 0.
 \end{align*}
-Using a radial basis function (RBF) as kernel we perform a grid search over $C$ and $\gamma$ to find those parameters that provide highest accuracy on the test set. We use the open source library ``libsvm'' \cite{chang2011libsvm} wrapped by some octave scripts for setting up data sets and performing grid search with k-fold cross-validation. Grid search with cross validation resulted in accuracies illustrated in Figure \ref{fig:svm_grid_search}. From the best parameter pairs we choose the one that performs best on the validation set, which gives us $C = 20$ and $\gamma = 0.1$.
+Using a radial basis function (RBF) as kernel we perform a grid search over $C$ and $\gamma$ to find those parameters that provide highest accuracy on the test set. We use the open source library ``libsvm'' \cite{chang2011libsvm} wrapped by some octave scripts for setting up data sets and performing grid search with k-fold cross-validation. Grid search with cross validation resulted in accuracies illustrated in Figure \ref{fig:svm_grid_search}. We can see that there is a certain area of $(C,\gamma)$ pairs which provide an accuracy close to $100\%$. To prevent overfitting we decide to choose $C$ and $\gamma$ by cross checking good pairs against another validation set. Further refinement results in the following values $C = 20$ and $\gamma = 0.1$.
 \begin{figure}[ht]
 	\centerline{\includegraphics[scale=0.20, trim=0 0 10 0]{../gridSearchSVMPlot}}
 	\caption{}
@@ -143,31 +142,30 @@ Image recognition is written in C by extensive use of the open source library Op
 \section{Evaluation}
 To evaluate the performance of different approaches we define the following data sets:
 \begin{itemize}
-\item d1: 4500 generated images
-\item d2: $\sim$ 1000 gathered images
-\item d3: D1 $\cup$ D2
-\item dVal: images of a captured Sudoku
+\item D1: 4500 generated images
+\item D2: $\sim$ 1000 gathered images
+\item D3: D1 $\cup$ D2
+\item DVal: images of some newly captured Sudoku
 \end{itemize}
 
-\color{red}
 \begin{table}[t]
-\caption{Classification accuracies for Neural Network, SVM and Logistic Regression on different data sets.}
+\caption{Classification accuracies for Neural Network, SVM and Logistic Regression on different data sets. All values are rounded averages!}
 \label{sample-table}
 \vskip 0.15in
 \begin{center}
 \begin{small}
 \begin{sc}
-\begin{tabular}{lcccc}
+\begin{tabular}{lccccc}
 \hline
 \abovespace\belowspace
-Data set & NN & SVM & LR & Winner \\
+Data & NN & pyNN & SVM & LR & Winner \\
 \hline
 \abovespace
-D1		& 95.9$\pm$ 0.2& 96.7$\pm$ 0.2& 96.7$\pm$ 0.2& ?\\
-D2		& 83.3$\pm$ 0.6& 80.0$\pm$ 0.6& ? & ?\\
-D3		& 61.9$\pm$ 1.4& 83.8$\pm$ 0.7& ? & ? \\
+D1 		& 78.0 &  & 100 & 80.80 & ?\\
+D2		& 93.4 & 95.94 & 94.41 & 91.36 & pyNN\\
+D3		&  & & & & ? \\
 \belowspace
-DVal	& 74.8$\pm$ 0.5& 78.3$\pm$ 0.6& ? & ?        \\
+DVal	& 89.3 & 88.1 & 92.7 & 85.3 & SVM\\
 \hline
 \end{tabular}
 \end{sc}
@@ -175,18 +173,10 @@ DVal	& 74.8$\pm$ 0.5& 78.3$\pm$ 0.6& ? & ?        \\
 \end{center}
 \vskip -0.1in
 \end{table}
-\color{black}
+As expected, on data sets D1, D2 and D3 all approaches performed pretty well as they were used for training. DVal is the data set that contains completely new images that were never used for training by any of the models. Thus, these values are the most interesting ones for evaluation. SVM and NN have comparable performance. Yet, the SVM is cheaper to train which is why applying an SVM seems more appropriate than using a NN. LR is outperformed by the other approaches but predicts with acceptable performance and requires less effort to train.
 
 \section{Future Work}
-\color{red}
-\begin{itemize}
-\item include information if a sudoku is unsolvable
-\item online learning
-\end{itemize}
-\color{black}
-
-
-\section{References}
+Several ideas arose during this project. A first step could be to implement online learning to empower the models to evolute over time and increase their accuracy with more Sudokus being scanned. When detecting new Sudokus it turned out that empty field detection was not as reliable as expected, especially when light conditions were bad. Improving this part of the system or maybe doing it from a machine learning point of view (adding a new label for empty fields) might be a good idea. Another improvement of the systems accuracy could be achieved by including information of the Sudoku solver into field prediction. The solver could inform about impossible field combinations forcing the number prediction script to maybe choose a less probable number combination from the model point of view, yet, being a possible one.
 
 \bibliography{paper}
 \bibliographystyle{icml2010}
