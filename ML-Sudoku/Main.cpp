@@ -349,7 +349,7 @@ void idle()
 
 				if ( fabs(c) < 0.001 ) //lines parallel?
 				{
-					std::cout << "lines parallel" << std::endl;
+					//std::cout << "lines parallel" << std::endl;
 					continue;
 				}
 
@@ -432,9 +432,9 @@ void idle()
 	if (key == 27) { run = false; }
 	else if (key == 100) debug = !debug;
 	else if (key == 99){
-		cout << "caputure!\n";
+		cout << "Image caputured!\n";
 		cvSaveImage("sudoku.png", iplMarker);
-		//run = false;
+		run = false;
 	}
 
 	isFirstStripe = true;
@@ -455,12 +455,12 @@ void cleanup()
 	cvDestroyWindow ("Converted Image");
 	cvDestroyWindow ("Stripe");
 	cvDestroyWindow ("Marker");
-	cout << "Finished\n";
+	cout << "Finished!\n";
 }
 
 int main(int argc, char* argv[]) 
 {
-	cout << "Press 'Esc' exit\n";
+	cout << "Press 'Esc' to exit\n";
 	cout << "Press 'c' to capture once the image seems right (yellow dot in left upper corner)...\n";
 	// setup OpenCV
 	init();
