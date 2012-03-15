@@ -14,7 +14,7 @@ from pybrain.tests.helpers       import gradientCheck
 #n_in = 400
 #n_hidden = 25
 #n_classes = 9
-config = loadmat('nn/config.mat')
+config = loadmat('octave/config.mat')
 cache = config['data_folder'][0].replace('../', '')+'/'+config['cache_file'][0]
 if not os.path.exists(cache):
     raise Exception('Cache file ('+cache+') is missing and has to be generated first! Run octave version...')
@@ -26,6 +26,8 @@ n_hidden = int(config['hidden_layer_size'][0][0])
 n_classes = int(config['num_labels'][0][0])
 weightdecay = config['lambda'][0][0]
 maxIter = int(config['maxIter'][0][0])
+
+from pybrain.tools.customxml import NetworkWriter
 
 def main():    
     ds = ClassificationDataSet(n_in, 1, nb_classes=n_classes)
@@ -62,5 +64,7 @@ def main():
               "  train error: %5.2f%%" % trnresult, \
               "  test error: %5.2f%%" % tstresult
     # print trainer.trainUntilConvergence()
+
+    NetworkWriter.writeToFile(net, 'net')
     
 main()

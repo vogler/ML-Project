@@ -1,7 +1,9 @@
 % Initialization
 clear ; close all; clc
 
-config();
+if !exist('config.mat')
+	config();
+endif
 load('config.mat');
 
 % Load images
