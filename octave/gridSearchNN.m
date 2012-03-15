@@ -18,18 +18,20 @@ else
     save("-mat-binary", cache, "X", "y");
 endif
 
+
 % mix data
 X(:,size(X,2)+1) = y;
+
+size(X)
+
 all_indexes_mixed = randperm(size(X,1));
-y = X(all_indexes_mixed, size(X,2));
-X = X(all_indexes_mixed,1:size(X,2)-1);
 
 n_samples = length(y)
 set_size = ceil(length(y)/number_of_sets)
 acc = [];
 
 for lIt=1:length(l)
-	average_accuracy_log_reg = 0;
+	average_accuracy = 0;
 	for i = 0:number_of_sets-1
 		printf('\n===== Starting iteration %i (next training/test set combination) =====\n', i);
 		b = min((i+1)*set_size, size(y)); % needed if last set is smaller
@@ -41,13 +43,13 @@ for lIt=1:length(l)
 		X_val = X(sel, 1:size(X,2)-1);
 		y_val = X(sel, size(X,2));
 		
-		Theta = logRegTrain(X_train,y_train, l(lIt), maxIter);
-		p = logRegPredict(Theta,X_val);
-		acc = mean(double(p == y_val))*100;
-		average_accuracy_log_reg += length(y_val)*acc;
+		[Theta1, Theta2] = nnTrain(X_train, y_train, l(lIt), maxIter);
+		pred = nnPredict(Theta1, Theta2, X_val);
+		acc = mean(double(pred == y_val))*100;
+		average_accuracy += length(y_val)*acc;
 	end
-	average_accuracy_log_reg /= size(X,1);
-	acc(length(acc)+1) = average_accuracy_log_reg;
+	average_accuracy /= size(X,1);
+	acc(length(acc)+1) = average_accuracy;
 end
 acc
-save("-mat-binary", "gridSearchLRResult.mat", "l", "acc");
+save("-mat-binary", "gridSearchNNResult.mat", "l", "acc");
