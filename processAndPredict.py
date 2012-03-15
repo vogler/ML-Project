@@ -1,26 +1,6 @@
-#from libs.pybrain.structure import FeedForwardNetwork
 import os, sys
-from nn_predict import predict
+from nnPredict import predict
 from scipy.io import loadmat
-
-def section(s):
-    print 
-    print 
-    print '-'*6+' '+s+' '+'-'*6
-
-def unique(seq):
-    seen = set()
-    seen_add = seen.add
-    return [ x for x in seq if x not in seen and not seen_add(x)]
-
-print "processing input images with octave and writing file octave/inputAndPredictedValues.mat"
-os.system('run-processInput.bat')
-
-
-input = loadmat('octave/inputAndPredictedValues.mat')
-
-# input matrix of detected sudoku numbers
-X = input['X']
 
 solution = [
 3,0,0, 2,4,0, 0,6,0,
@@ -32,6 +12,17 @@ solution = [
 0,0,1, 9,2,0, 5,0,0,
 2,0,0, 3,0,0, 7,4,0,
 9,6,0, 5,0,0, 3,0,2]
+
+def section(s):
+    print 
+    print 
+    print '-'*6+' '+s+' '+'-'*6
+
+def unique(seq):
+    seen = set()
+    seen_add = seen.add
+    return [ x for x in seq if x not in seen and not seen_add(x)]
+
 def checkAccuracy(pred, printFailed=False):
     predicted_values = [0 for i in range(9*9)]
     for i,c in zip(field, pred):
@@ -52,46 +43,58 @@ def prediction(name, value=[]):
     print
     return pred
 
-# predicted values from octave
-field = [int(x[0]) for x in input['field']]
-section('Predictions')
-pNN      = prediction('pNN')
-pSVM     = prediction('pSVM')
-pLR      = prediction('pLR')
-pPyBrain = prediction('pPyBrain', predict())
+def main():
+    global input, field
+    print "processing input images with octave and writing file octave/inputAndPredictedValues.mat"
+    os.system('run-processInput.bat')
 
-predictMethod = 'pPyBrain'
-print '-> Using ', predictMethod
-p = eval(predictMethod)
+    input = loadmat('octave/inputAndPredictedValues.mat')
 
-# creating list of params for solver
-field_param = ''
-rows = [[] for i in range(9)]
-cols = [[] for i in range(9)]
+    # input matrix of detected sudoku numbers
+    X = input['X']
+    # predicted values from octave
+    field = [int(x[0]) for x in input['field']]
+    section('Predictions')
+    pNN      = prediction('pNN')
+    pSVM     = prediction('pSVM')
+    pLR      = prediction('pLR')
+    pPyBrain = prediction('pPyBrain', predict())
 
-for i,c in zip(field, p):
-    row = int((i-1)/9)
-    col = int((i-1)%9)
-    # print i, row, col, c
-    field_param += ' '+str(row)+str(col)+str(c)
-    rows[row].append(c) # used for error checking
-    cols[col].append(c)
+    predictMethod = 'pNN'
+    print '-> Using ', predictMethod
+    p = eval(predictMethod)
 
-# accuracy
-section('Accuracy')
-checkAccuracy(p, True)
+    # creating list of params for solver
+    field_param = ''
+    rows = [[] for i in range(9)]
+    cols = [[] for i in range(9)]
 
-section('Valid Sudoku?')
-error = False
-for row, col in zip(rows, cols):
-    if row != unique(row) or col != unique(col):
-        print 'ERROR: duplicate number in row or column (1-9 allowed at most once)'
-        print 'row: ', row
-        print 'col: ', col
-        error = True
-if error:
-        print 'WARNING: Solver will run forever (just used to display Sudoku field)'
-        # exit()
+    for i,c in zip(field, p):
+        row = int((i-1)/9)
+        col = int((i-1)%9)
+        # print i, row, col, c
+        field_param += ' '+str(row)+str(col)+str(c)
+        rows[row].append(c) # used for error checking
+        cols[col].append(c)
 
-section('Solver')
-os.system('java -cp . Sudoku'+field_param)
+    # accuracy
+    section('Accuracy')
+    checkAccuracy(p, True)
+
+    section('Valid Sudoku?')
+    error = False
+    for row, col in zip(rows, cols):
+        if row != unique(row) or col != unique(col):
+            print 'ERROR: duplicate number in row or column (1-9 allowed at most once)'
+            print 'row: ', row
+            print 'col: ', col
+            error = True
+    if error:
+            print 'WARNING: Solver will run forever (just used to display Sudoku field)'
+            # exit()
+
+    section('Solver')
+    os.system('java -cp . Sudoku'+field_param)
+
+if __name__ == '__main__':
+    main()
