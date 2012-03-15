@@ -2,7 +2,7 @@ from pybrain.tools.customxml import NetworkReader
 from scipy.io import loadmat
 
 def main():
-    net = NetworkReader.readFrom('net')
+    net = NetworkReader.readFrom('net.xml')
     input = loadmat('octave/inputAndPredictedValues.mat')
     X = input['X']
     field = input['field']
