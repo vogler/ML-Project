@@ -67,7 +67,7 @@ test.py
 
 data1/cache.mat
 data2/cache.mat
-net.xml
+./net.xml
 octave/models.mat
 octave/config.mat
 octave/inputAndPredictedValues.mat
