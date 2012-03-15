@@ -1,0 +1,78 @@
+GNU Octave, version 3.2.4
+Copyright (C) 2009 John W. Eaton and others.
+This is free software; see the source code for copying conditions.
+There is ABSOLUTELY NO WARRANTY; not even for MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  For details, type `warranty'.
+
+Octave was configured for "i686-pc-mingw32".
+
+Additional information about Octave is available at http://www.octave.org.
+
+Please contribute if you find this software useful.
+For more information, visit http://www.octave.org/help-wanted.html
+
+Report bugs to <bug@octave.org> (but first, please read
+http://www.octave.org/bugs.html to learn how to write a helpful report).
+
+For information about changes from previous versions, type `news'.
+
+...ignore this output, it is from libsvm...Accuracy = 2.32558% (1/43) (classification)
+ -----------------------
+| 3     | 2 4   |   6   |
+|   4   |       |   5 3 |
+| 1 8 9 | 6 3 5 | 4     |
+ -----------------------
+|       |   8   | 2     |
+|     7 | 4 9 6 | 8   2 |
+| 8 9 3 | 1 5   | 6   4 |
+ -----------------------
+|   1 1 | 9 2   | 5     |
+| 2     | 3     | 7 4   |
+| 9 6   | 5     | 3   2 |
+ -----------------------
+NONE
+processing input images with octave and writing file octave/inputAndPredictedValues.mat
+
+
+------ Predictions ------
+pNN [3, 4, 5, 3, 1, 8, 9, 6, 3, 5, 4, 8, 2, 7, 2, 4, 9, 6, 8, 2, 8, 9, 3, 1, 4, 5, 6, 4, 1, 1, 9, 2, 5, 2, 3, 7, 4, 9, 6, 5, 3, 6, 2]
+Correct:  79 Failed numbers:  1
+Accuracy:  0.975308641975
+Accuracy for numbers:  41 / 42 -> 0.97619047619
+
+pSVM [3, 4, 5, 3, 4, 4, 9, 4, 3, 5, 4, 4, 2, 4, 2, 4, 9, 6, 4, 4, 4, 4, 3, 4, 4, 4, 6, 4, 4, 1, 4, 4, 4, 2, 3, 4, 4, 9, 4, 4, 4, 6, 4]
+Correct:  61 Failed numbers:  19
+Accuracy:  0.753086419753
+Accuracy for numbers:  23 / 42 -> 0.547619047619
+
+pLR [3, 4, 5, 3, 1, 8, 9, 6, 3, 5, 4, 8, 2, 7, 2, 4, 9, 6, 8, 1, 9, 9, 3, 1, 4, 5, 6, 4, 1, 1, 9, 2, 5, 2, 3, 7, 4, 9, 6, 5, 3, 6, 2]
+Correct:  79 Failed numbers:  1
+Accuracy:  0.975308641975
+Accuracy for numbers:  41 / 42 -> 0.97619047619
+
+pPyBrain [3, 4, 5, 3, 1, 8, 9, 6, 3, 5, 4, 8, 2, 7, 2, 4, 9, 6, 8, 1, 8, 9, 3, 1, 4, 5, 6, 4, 2, 1, 9, 2, 5, 2, 9, 7, 4, 9, 6, 5, 3, 6, 2]
+Correct:  79 Failed numbers:  1
+Accuracy:  0.975308641975
+Accuracy for numbers:  41 / 42 -> 0.97619047619
+
+-> Using  pNN
+
+
+------ Accuracy ------
+Correct:  79 Failed numbers:  1
+[(45, 1, 2), (56, 0, 1)]
+Accuracy:  0.975308641975
+Accuracy for numbers:  41 / 42 -> 0.97619047619
+
+
+------ Valid Sudoku? ------
+ERROR: duplicate number in row or column (1-9 allowed at most once)
+row:  [1, 1, 9, 2, 5]
+col:  [4, 2, 8, 6, 5, 7, 3]
+ERROR: duplicate number in row or column (1-9 allowed at most once)
+row:  [9, 6, 5, 3, 2]
+col:  [3, 2, 4, 2]
+WARNING: Solver will run forever (just used to display Sudoku field)
+
+
+------ Solver ------

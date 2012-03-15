@@ -1,7 +1,7 @@
 @echo off
 
 echo 1. generate random images
-call run-data.bat
+rem call run-data.bat
 
 echo 2. train neural network (Octave)
 call run-octave.bat
