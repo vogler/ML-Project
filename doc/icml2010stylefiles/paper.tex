@@ -95,7 +95,7 @@ These images are preprocessed (applying greyscale) by an octave script and writt
 	\caption{Overview}
 	\label{fig:overview}
 \end{figure}
-The input matrix $X^{n\text{x}400}$ and the target vector $y$ are the inputs for training NN, SVM and LR, as described in Section \ref{training}. After training, the learned models/parameters are saved in ``.mat'' files that can be loaded by the number prediction. The other input for number prediction is an input matrix of the same form as $X$ with a row entry for each Sudoku field that was detected to contain a number. This implies that we do not train our models to detect empty fields. We could detect empty fields with high accuracy by performing some preprocessing steps on the images (filling borders, adjusting thresholds etc.) thus applying a machine learning technique does not seem appropriate for this task.
+The input matrix $X^{n\text{x}400}$ and the target vector $y$ are the inputs for training NN, SVM and LR, as described in Section \ref{training}. After training, the learned models/parameters are saved in ``.mat'' files that can be loaded by the number prediction. The other input for number prediction is an input matrix of the same form as $X$ with a row entry for each Sudoku field that was detected to contain a number. This implies that we do not train our models to detect empty fields. We were able to detect empty fields with high accuracy by performing some preprocessing steps on the images (filling borders, adjusting thresholds etc.) thus applying a machine learning technique does not seem appropriate for this task. Nevertheless the system can be easily adjusted to handle empty fields as well.
 
 \section{Training}
 \label{training}
@@ -112,7 +112,7 @@ subject to $w$.
 	\caption{Neural Network with one hidden layer}
 	\label{fig:nn}
 \end{figure}
-For NNs we test two implementations. On the one hand we use a partly self-developed octave code for two-layer NNs which was written as part of the stanford machine learning course\footnote{http://www.ml-class.org}, on the other hand we include PyBrain \cite{schaul2010pybrain} for comparison and easier evaluation of more sophisticated network architectures. To find a good value for the regularization parameter $\lambda$ we perform a grid search with k-fold cross-validation which gives us a good performance when choosing $\lambda = 1$.
+For NNs we test two implementations. On the one hand we use a partly self-developed octave code for two-layer NNs which was written as part of the Stanford machine learning course\footnote{http://www.ml-class.org}, on the other hand we include PyBrain \cite{schaul2010pybrain} for comparison and easier evaluation of more sophisticated network architectures. To find a good value for the regularization parameter $\lambda$ we perform a grid search with k-fold cross-validation which gives us a good performance when choosing $\lambda = 1$ for the octave version and $\lambda = 0$ for PyBrain.
 
 \subsection{Support Vector Machines}
 The next technique we apply to the discussed problem are Support Vector Machines \cite{Bishop200608} which try to solve the following optimization problem:
@@ -121,7 +121,7 @@ The next technique we apply to the discussed problem are Support Vector Machines
 \text{subject to } &~~ y_i(w^T \phi(x_i) + b) - 1 + \xi_i \ge 0\\
 \text{and} &~~ \xi_i \ge 0.
 \end{align*}
-Using a radial basis function (RBF) as kernel we perform a grid search over $C$ and $\gamma$ to find those parameters that provide highest accuracy on the test set. We use the open source library ``libsvm'' \cite{chang2011libsvm} wrapped by some octave scripts for setting up data sets and performing grid search with k-fold cross-validation. Grid search with cross validation resulted in accuracies illustrated in Figure \ref{fig:svm_grid_search}. We can see that there is a certain area of $(C,\gamma)$ pairs which provide an accuracy close to $100\%$. To prevent overfitting we decide to choose $C$ and $\gamma$ by cross checking good pairs against another validation set. Further refinement results in the following values $C = 20$ and $\gamma = 0.1$.
+Using a radial basis function (RBF) as a kernel we perform a grid search over $C$ and $\gamma$ to find those parameters that provide highest accuracy on the test set. We use the open source library ``libsvm'' \cite{chang2011libsvm} wrapped by some octave scripts for setting up data sets and performing grid search with k-fold cross-validation. Grid search with cross validation resulted in accuracies illustrated in Figure \ref{fig:svm_grid_search}. We can see that there is a certain area of $(C,\gamma)$ pairs which provide an accuracy close to $100\%$. To prevent overfitting we decide to choose $C$ and $\gamma$ by cross checking good pairs against another validation set. Further refinement results in the following values $C = 20$ and $\gamma = 0.1$.
 \begin{figure}[ht]
 	\centerline{\includegraphics[scale=0.20, trim=0 0 10 0]{../gridSearchSVMPlot}}
 	\caption{}
@@ -134,10 +134,10 @@ Finally we apply Logistic Regression to the datasets. Again we use a (vectorized
 E(w) &= \frac{1}{n}(-y^T ln(\Phi w) + (1-y^T)ln(1-\Phi w))\\
 &~~~+\frac{\lambda}{2n}w^Tw
 \end{align*}
-with respect to $w$. Minimization is performed by an algorithm\footnote{http://sprinkler.googlecode.com/svn/trunk/\\regression/fmincg.m} that was provided during the stanford machine learning course. Grid search and k-fold cross-validation recommend a value for the regularization parameter $\lambda$.
+with respect to $w$. Minimization is performed by an algorithm\footnote{http://sprinkler.googlecode.com/svn/trunk/\\regression/fmincg.m} that was provided during the Stanford machine learning course. Grid search and k-fold cross-validation recommend a value for the regularization parameter $\lambda$.
 
 \section{Image Recognition and Preprocessing}
-Image recognition is written in C by extensive use of the open source library OpenCV\footnote{http://opencv.willowgarage.com/wiki/}. Images captured by the webcam are continously analyzed to find a Sudoku square. Images are transformed to greyscale, then an adaptive threshold algorithm is used to preprocess the image for contour detection by OpenCV. OpenCV returns a list of contours which are further checked for certain criteria like having four corners or being of certain size. Since the contours are not detected precise enough lines are fitted through six checkpoints on each edge in order to achieve subpixel accuracy. The content enclosed by the corners is perspectively warped to fit a predefined square size. Finally, the thresholded Sudoku field is saved to disk. A python script is then used to split the whole field into 9x9 subfields with each subfield being flood filled around the corners for noise reduction. The format of the subfields now equals to the one provided by the generated images which allows us to apply the trained NN/SVM/LR models and, finally, apply a Sudoku solver.
+Image recognition is written in C by extensive use of the open source library OpenCV\footnote{http://opencv.willowgarage.com/wiki/}. Images captured by the webcam are continously analyzed to find a Sudoku square. The images are transformed to greyscale, then an adaptive threshold algorithm is used to preprocess the image for contour detection by OpenCV. OpenCV returns a list of contours which are further checked for certain criteria like having four corners or being of a certain size. Since the contour detection isn't precise enough, lines are fitted through six checkpoints on each edge in order to achieve subpixel accuracy. The content enclosed by the corners is perspectively warped to fit a predefined square size. Finally, the thresholded Sudoku field is saved to disk. A python script is then used to split the whole field into 9x9 subfields with each subfield being flood filled around the corners for grid-artefact reduction. The format of the subfields now equals the one provided by the generated images which allows us to apply the trained NN/SVM/LR models and, finally, apply a Sudoku solver.
 
 \section{Evaluation}
 To evaluate the performance of different approaches we define the following data sets:
@@ -163,7 +163,7 @@ Data & NN & pyNN & SVM & LR & Winner \\
 \abovespace
 D1 		& 86.0 & 84.0 & 98.0 & 83.80 & SVM\\
 D2		& 93.41 & 95.94 & 94.41 & 91.36 & pyNN\\
-D3		& 90.27 & 91.53& & 95.01 & 88.42 \\
+D3		& 90.27 & 91.53 & 95.01 & 88.42 & SVM\\
 \belowspace
 DVal	& 87.36 & 86.18 & 91.76 & 83.33 & SVM\\
 \hline
