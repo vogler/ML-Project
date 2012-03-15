@@ -6,7 +6,7 @@ out = 'input/'
 tmp = out+'tmp/'
 size = 20
 m = 0
-threshold = 240 # brighter fields are empty
+threshold = 250 # brighter fields are empty
 
 if not os.path.exists(input):
     print input+' is missing! Capture image using cv.exe first.'
@@ -24,7 +24,7 @@ BORDER_COLOR = 240
 def flood_fill(img, x, y, value):
     "Flood fill on a region of non-BORDER_COLOR pixels."
     p = img.load()
-    if not within(img, x, y) or p[x, y] >= BORDER_COLOR:
+    if not within(img, x, y) or p[x, y] >= 240:
         return
     edge = [(x, y)]
     p[x, y] = value
@@ -32,27 +32,40 @@ def flood_fill(img, x, y, value):
         newedge = []
         for (x, y) in edge:
             for (s, t) in ((x+1, y), (x-1, y), (x, y+1), (x, y-1)):
-                if within(img, s, t) and p[s, t] < BORDER_COLOR: #not in (BORDER_COLOR, value):
-                    # print s, t, p[s, t], value
-                    p[s, t] = value
-                    newedge.append((s, t))
+                if within(img, s, t) and p[s, t] < BORDER_COLOR: #abs(org - p[s, t]) < 50: #not in (BORDER_COLOR, value):
+                        # print s, t, p[s, t], value
+                        p[s, t] = value
+                        newedge.append((s, t))
         edge = newedge
 
+FILL = 255
 def process(img):
     "flood fill white in every corner to remove unwanted edges"
     # better: http://packages.python.org/mahotas
-    o = 0
-    s = size-o-1
-    flood_fill(img, o, o, 255)
-    flood_fill(img, s, o, 255)
-    flood_fill(img, o, s, 255)
-    flood_fill(img, s, s, 255)
+    
+    for o in range(2): # fill from corners going inwards with an offset o
+        s = size-o-1
+        flood_fill(img, o, o, FILL)
+        flood_fill(img, s, o, FILL)
+        flood_fill(img, o, s, FILL)
+        flood_fill(img, s, s, FILL)
+
+    for o in range(1): # go around all edges
+        for i in range(size):
+            flood_fill(img, o, i, FILL)
+            flood_fill(img, i, size-o, FILL)
+            flood_fill(img, size-o, i, FILL)
+            flood_fill(img, i, o, FILL)
+
     return img
 
 def brightness(img):
    im = img.convert('L')
    stat = ImageStat.Stat(im)
    return stat.mean[0]
+
+def mean(nums):
+    return float(sum(nums) / len(nums)) if len(nums) else 0.0
 
 img = Image.open(input)
 img.thumbnail((9*size, 9*size), Image.ANTIALIAS)
@@ -77,3 +90,4 @@ for i in range(9*9):
 histogram.sort()
 print 'Mean brightness for all fields: ', histogram
 print 'Median: ', histogram[len(histogram)/2]
+print 'Mean: ', mean(histogram)

@@ -8,12 +8,12 @@ if os.path.exists(folder):
     shutil.rmtree(folder)
 
 if(concrete):
-    fonts = ['arialbd.ttf', 'ariblk.ttf']
-    size_mu = 18
+    fonts = ['arialbd.ttf', 'comicbd.ttf'] #, 'arialbd.ttf', 'ariblk.ttf']
+    size_mu = 16
     size_sig = 1
     pos_sig = 1
-    color_sig = 50
-    rotate_sig = 5
+    color_sig = 10
+    rotate_sig = 0
 else:
     fonts = ['arial.ttf', 'ariali.ttf', 'comicbd.ttf']#, 'HARNGTON.TTF', 'FREESCPT.TTF'] #'LHANDW.TTF', 'HoboStd.otf']
     size_mu = 19
