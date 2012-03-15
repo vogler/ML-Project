@@ -24,7 +24,7 @@ y = mat['y']
 n_in = int(config['input_layer_size'][0][0])
 n_hidden = int(config['hidden_layer_size'][0][0])
 n_classes = int(config['num_labels'][0][0])
-weightdecay = config['lambda'][0][0]
+weightdecay = config['lambda'][0][0]-1
 maxIter = int(config['maxIter'][0][0])
 
 from pybrain.tools.customxml import NetworkWriter
