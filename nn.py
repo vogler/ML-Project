@@ -65,6 +65,6 @@ def main():
               "  test error: %5.2f%%" % tstresult
     # print trainer.trainUntilConvergence()
 
-    NetworkWriter.writeToFile(net, 'net')
+    NetworkWriter.writeToFile(net, 'net.xml')
     
 main()
