@@ -34,17 +34,26 @@ def checkAccuracy(pred, printFailed=False):
     if printFailed: print failed
     print 'Accuracy: ', len(correct)/(9.*9)
     print 'Accuracy for numbers: ', correctNumbers, '/', 42, '->', correctNumbers/42.
+    return len(correct)/(9.*9)
 
 def prediction(name, value=[]):
+    global bestacc, bestp
     pred = value if len(value) else [int(x[0]) for x in input[name]]
     if -1 in pred: pred = []
     print name, pred
-    if len(pred): checkAccuracy(pred)
+    if len(pred):
+        acc = checkAccuracy(pred)
+        if acc > bestacc:
+            print 'better', bestp, name, bestacc, acc
+            bestacc = acc
+            bestp = name
     print
     return pred
 
 def main():
-    global input, field
+    global input, field, bestacc, bestp
+    bestacc = -1
+    bestp   = 'pNN'
     print "processing input images with octave and writing file octave/inputAndPredictedValues.mat"
     os.system('run-processInput.bat')
 
@@ -60,7 +69,8 @@ def main():
     pLR      = prediction('pLR')
     pPyBrain = prediction('pPyBrain', predict())
 
-    predictMethod = 'pNN'
+    # predictMethod = 'pNN'
+    predictMethod = bestp
     print '-> Using ', predictMethod
     p = eval(predictMethod)
 
