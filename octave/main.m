@@ -105,4 +105,5 @@ if (do_cross_validation)
 endif
 
 % save the trained models
+printf('saving model...');
 save("-mat-binary", models_file, "Theta1", "Theta2", "model", "Theta");

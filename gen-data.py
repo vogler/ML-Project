@@ -11,7 +11,7 @@ if(concrete):
     fonts = ['comicbd.ttf', 'arialbd.ttf'] #, 'arialbd.ttf', 'ariblk.ttf']
     size_mu = 16
     size_sig = 2
-    pos_sig = 3
+    pos_sig = 2
     color_sig = 10
     rotate_sig = 0
 else:

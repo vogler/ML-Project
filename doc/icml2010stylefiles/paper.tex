@@ -113,8 +113,17 @@ The next technique we applied to the discussed problem are Support Vector Machin
 \text{subject to } &~~ y_i(w^T \phi(x_i) + b) - 1 + \xi_i \ge 0\\
 \text{and} &~~ \xi_i \ge 0.
 \end{align*}
-Using a radial basis function (RBF) as kernel we performed a grid search over $C$ and $\gamma$ to find those parameters that provide the highest accuracy on the validation set. We used the open source library ``libsvm'' \cite{chang2011libsvm} wrapped by some octave scripts for setting up data sets and performing the grid search.
+Using a radial basis function (RBF) as kernel we performed a grid search over $C$ and $\gamma$ to find those parameters that provide the highest accuracy on the test set. We used the open source library ``libsvm'' \cite{chang2011libsvm} wrapped by some octave scripts for setting up data sets and performing the grid search with k-fold cross validation. Grid search with cross validation resulted in accuracies illustrated in \ref{fig:svm_grid_search}, thus we chose $C = ?$ and $\lambda = ?$.
+\begin{figure}[ht]
+	\centerline{\includegraphics[scale=0.20, trim=0 0 10 0]{gridSearchSVMPlot}}
+	\caption{}
+	\label{fig:svm_grid_search}
+\end{figure}
+
+
 \subsection{Logistic Regression}
+
+\color{red}performance on an example sudoku\color{black}
 
 
 \section{Image Recognition and Preprocessing}
