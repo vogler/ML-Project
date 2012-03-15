@@ -1,5 +1,6 @@
 *.zip
 *.class
+*.pyc
 
 #ignore thumbnails created by windows
 Thumbs.db
@@ -32,8 +33,7 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 ipch/
 *.sdf
-data/
-libs/
+*.opensdf
 
 #latex
 *.aux
@@ -59,9 +59,11 @@ libs/
 *.mtc1
 *.out
 *.synctex.gz
-ML-Sudoku/ML Project.opensdf
-*.pyc
+
+data/
 input/
+libs/
+
 cv/sudoku.png
 test.py
 
