@@ -18,5 +18,4 @@ for x=1:length(files)
 	endif
 end
 [pNN, pSVM, pLR] = predict(X);
-field
 save("-mat-binary", "inputAndPredictedValues.mat", "X", "field", "pNN", "pSVM", "pLR");
