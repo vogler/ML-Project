@@ -1,3 +1,319 @@
+commit 76ec20fa2740c613d78cfc768ed467d2e52a6856
+Author: vogler <ralf.vogler@gmail.com>
+
+    Final paper and poster
+
+commit 4c1fad5bbb8523950c994c59cb4e584ac26947d7
+Merge: 3869aa0 489ccf1
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+
+commit 3869aa05c13b8cb4021e37fd72db8077818b35fa
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    added nn grid search and fixed lr grid search
+
+commit 489ccf147c963135de1f8285923725d8cb8274b2
+Merge: 97ee09e 04e1033
+Author: vogler <ralf.vogler@gmail.com>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+
+commit 97ee09e094995d526fdf093899edd3532b1543f0
+Author: vogler <ralf.vogler@gmail.com>
+
+    fix
+
+commit 04e10337810fe1ee66422f2e63df3efab8dff45e
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    - fixed paper
+    
+    - lr gridsearch results added
+
+commit 87bbf1aee75b3f67b99f0c07480d8819ada521f0
+Merge: c49817b a1c2b79
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+
+commit c49817b5267463317342d9c54cf82d5245bb9f1d
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    - added grid search for logistic regression
+    
+    - first draft of paper
+
+commit a1c2b79bf41c5fadea95034fc5fa84cfbfd9adac
+Merge: 47f72cf 6532486
+Author: vogler <ralf.vogler@gmail.com>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+
+commit 47f72cf60df4b6e03dc47f6d97b439e4afaaee4c
+Author: vogler <ralf.vogler@gmail.com>
+
+    Poster
+
+commit 653248636a1c0d62582094669a87567908bb9ff1
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    fix
+
+commit 75526f15155a965b4e3b53eb3fca42f4ab8aba65
+Merge: ac53d03 f79c896
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+
+commit f79c896e9d7f614bda0859ace454f4c6477a39a3
+Author: vogler <ralf.vogler@gmail.com>
+
+    fixed empty data
+
+commit bc216482c001914a6d4ad80bcecfeb6db9e4d0d2
+Author: vogler <ralf.vogler@gmail.com>
+
+    use the method with the highest accuracy
+
+commit ac53d03efc437de47fc157a4a6b259cd06d50c6e
+Merge: 108495d 60d01b0
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+
+commit 108495d1e66675918a51aeea844c743dde1efd11
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    worked on doc
+
+commit 60d01b0562709cf8d3f015516e146a04629bde8c
+Author: vogler <ralf.vogler@gmail.com>
+
+    all models 100%
+
+commit 4119e059dd8540dba87847e23bc89f989716f815
+Author: vogler <ralf.vogler@gmail.com>
+
+    models: net.xml
+
+commit 7c0161d16d61440c64e551e38b3cd2c576fdfdb8
+Merge: 0d90246 4c68c10
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+
+commit 0d9024653ddddaf996825e9ac7652d78d8b942b7
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    - finished gridSearchSVM to work with the real data
+    
+    - worked on doc
+    - moved resource files from doc one folder up
+    - removed ex4.pdf
+
+commit 4c68c10cf2e981d984982b757835034147fe1446
+Author: vogler <ralf.vogler@gmail.com>
+
+    models
+    
+    gitignore: .mat explicit
+
+commit 81cc77922c709b42ac264a6a574428b05d714e44
+Author: vogler <ralf.vogler@gmail.com>
+
+    models: data3: data and data2 combined
+
+commit 2647009e8f1e5546146efa81a699c20859361170
+Author: vogler <ralf.vogler@gmail.com>
+
+    history of models:
+    
+    d1 = generated, d2 = gathered
+    a_b_c -> lambdas for nn, svm, lr
+
+commit 21255d485b9a4f6e8fe39b9492ce67a19cc5be24
+Author: vogler <ralf.vogler@gmail.com>
+
+    gathered data
+
+commit 022155ca26c324b048f9edca35d76957e5d4f389
+Author: vogler <ralf.vogler@gmail.com>
+
+    batch-files
+    
+    gitignore
+
+commit c4f31cc6bb60bd6643e729e05893a861b7f02784
+Author: vogler <ralf.vogler@gmail.com>
+
+    cleanup
+
+commit 35bb5f7fca8b049872c81e4d367c78f795818b0e
+Author: vogler <ralf.vogler@gmail.com>
+
+    gatherData2: enter solution, multiple captures automatically classified
+    
+    refactoring: naming, config
+    gitignore
+
+commit 6eb82ede6766afb3fb2a8341e0478e4d5f6c267c
+Author: vogler <ralf.vogler@gmail.com>
+
+    gathered data
+
+commit 526e2a6cbca62803d5747e049e12018030422170
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    added grid search result file of svm
+
+commit 1466b586409ff0fbc56b0ea68877c3dc75a9ee50
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    fixed problem with hyperref
+
+commit 800be9bea146afddb35684e6868f6f6fd414764d
+Merge: 841b4a4 e103c4d
+Author: vogler <ralf.vogler@gmail.com>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+
+commit 841b4a40e8878164927bba27c24b4aafcca05a61
+Author: vogler <ralf.vogler@gmail.com>
+
+    refactoring: common naming scheme {method}{Train|Predict}
+    
+    config: lambda is now a vector -> 3 lambdas for nn, svm, lr
+
+commit e103c4dbc015b1b05f5bc135ffd561773cf34fd3
+Merge: 80b2213 3a4f629
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+    
+    Conflicts:
+    	doc/icml2010stylefiles/paper.pdf
+
+commit 80b2213aa79c628306579c13e439ff783c65c9f2
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    - fixed/improved svm grid search
+    
+    - added grid search result plotting
+
+commit 3a4f629603d5b18f7872a14207e821f10909309e
+Author: vogler <ralf.vogler@gmail.com>
+
+    ignore test.py
+
+commit 056f354f67a45c3aa1209b6c5df6c871cb7a53cd
+Author: vogler <ralf.vogler@gmail.com>
+
+    Gathered data
+
+commit 3fb7236a6cf1ef64a560fd95355aa4537807f62f
+Author: vogler <ralf.vogler@gmail.com>
+
+    script to gather data: capture from webcam and let the user label numbers in an infinite loop
+
+commit 0713932b721f8d7a81bf0f49a71b16c43f9e26ac
+Author: vogler <ralf.vogler@gmail.com>
+
+    refactored: different prediction methods with accuracy-checks
+    
+    params
+
+commit 4de95d4814633ca4a7490934d38b2596abdb0108
+Author: vogler <ralf.vogler@gmail.com>
+
+    output import config in main and added debug imshow in predict
+
+commit 0830854e99495630d9472b7d9a4291e75b3b755a
+Author: vogler <ralf.vogler@gmail.com>
+
+    run-cv, capture and exit on 'c'
+
+commit 61c44c5837b62833ab94fbd8e7151235aef5d23a
+Author: vogler <ralf.vogler@gmail.com>
+
+    run-cv, capture and exit on 'c'
+
+commit d560abe0aa5319329213790cc93e26ed9480304c
+Author: vogler <ralf.vogler@gmail.com>
+
+    PyBrain net with config(0, 400, 1)
+
+commit 0fa7ecc513bcc3a51df486b7bc3a9aef68018ccd
+Author: vogler <ralf.vogler@gmail.com>
+
+    change in position decreases accuracy drastically
+
+commit 968de561211b4ff3cfa29ab5563ab71e449ba97d
+Merge: 28ada19 560e37c
+Author: vogler <ralf.vogler@gmail.com>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+
+commit 28ada198ccdd0c5c8f8ba60b2846acbbdaa0ad16
+Author: vogler <ralf.vogler@gmail.com>
+
+    abstract
+
+commit 560e37cae07ce322ecf635201770a5a927d9f0ac
+Merge: d1b1dc1 3bd84e7
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+    
+    Conflicts:
+    	doc/icml2010stylefiles/paper.tex
+
+commit d1b1dc1f49a16d5d0b3b44c7bead32a58956f572
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    worked on svm part in doc
+
+commit 3bd84e793d81a94a8b60fb66d83c351f7a8a8356
+Author: vogler <ralf.vogler@gmail.com>
+
+    pdf removed from gitignore because of includes for latex
+
+commit ddfa2b2c77048256993b57ab2a9f96040ab425ec
+Author: vogler <ralf.vogler@gmail.com>
+
+    predict using PyBrain
+
+commit 1584b218923ff5f76e17a7d45b72fa670693ff34
+Author: vogler <ralf.vogler@gmail.com>
+
+    commit history
+
+commit 3371379c0d3965541157c559513e87ffd2ac6440
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    fixed gamma parameter
+
+commit 5f9caf985d7d43b9c97868b7d6b1a76488777d91
+Merge: 31bd120 5019263
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    Merge branch 'master' of github.com:vogler/ML-Project
+    
+    Conflicts:
+    	octave/config.m
+    	octave/main.m
+
+commit 31bd1202f17a852055260d87099f98e5803191d3
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    added gamma parameter and gridSearch
+
+commit 9c9b210b37cda6c95ee3625a0101818798bc6096
+Author: simpson <simpson@simpson-XPS.(none)>
+
+    added nn.pdf
+
 commit 5019263bfb58761434ba9cf7f00412a80cbb8ce6
 Author: vogler <ralf.vogler@gmail.com>
 
