@@ -44,6 +44,10 @@
 % Therefore, a short form for the running title is supplied here:
 \icmltitlerunning{Number recognition for use in a Sudoku solver}
 
+
+% custom imports
+\usepackage{amsmath}
+
 \begin{document} 
 
 \twocolumn[
@@ -103,8 +107,15 @@ Number and letter recognition is key in many real-world applications. Digitalizi
 	\caption{Neural Network with one hidden layer}
 	\label{fig:nn}
 \end{figure}
-\subsection{Support Vector Machine}
-\subsection{Logistic Regrssion}
+\subsection{Support Vector Machines}
+The next technique we applied to the discussed problem are Support Vector Machines \cite{Bishop200608} which try to solve the following optimization problem:
+\begin{align*}
+\min_{w,b} &~~ \frac{1}{2}||w||^2 + C \sum_{i=1}^{n} \xi_i\\
+\text{subject to } &~~ y_i(w^T \phi(x_i) + b) - 1 + \xi_i \ge 0\\
+\text{and} &~~ \xi_i \ge 0.
+\end{align*}
+Using a radial basis function (RBF) as kernel we performed a grid search over $C$ and $\gamma$ to find those parameters that provide the highest accuracy on the validation set. We used the open source library ``libsvm'' \cite{chang2011libsvm} wrapped by some octave scripts for setting up data sets and performing the grid search.
+\subsection{Logistic Regression}
 
 
 \section{Image Recognition and Preprocessing}
@@ -115,6 +126,18 @@ Number and letter recognition is key in many real-world applications. Digitalizi
 
 \section{Future Work}
 \color{red} include information if a sudoku is unsolvable \color{black}
+
+
+
+
+
+\section{References}
+
+\bibliography{paper}
+\bibliographystyle{icml2010}
+
+
+
 
 
 
