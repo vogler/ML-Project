@@ -1,5 +1,6 @@
 #from libs.pybrain.structure import FeedForwardNetwork
 import os, sys
+from nn_predict import predict
 from scipy.io import loadmat
 
 print "processing input images with octave and writing file octave/inputAndPredictedValues.mat"
@@ -16,6 +17,8 @@ field = input['field']
 pNN = input['pNN']
 pSVM = input['pSVM']
 pLR = input['pLR']
+pPyBrain = predict()
+p = pSVM
 
 def section(s):
     print 
@@ -30,7 +33,7 @@ field_param = ''
 rows = [[] for i in range(9)]
 cols = [[] for i in range(9)]
 predicted_values = [0 for i in range(9*9)]
-for i,c in zip(field, pSVM):
+for i,c in zip(field, p):
     i, c = int(i), int(c)
     predicted_values[i-1] = c
     row = int((i-1)/9)
