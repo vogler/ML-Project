@@ -17,7 +17,32 @@ pNN = input['pNN']
 pSVM = input['pSVM']
 pLR = input['pLR']
 
-classes = zip(field, pNN)
-print classes
-for i,c in classes:
-    print i/9, i%9, c
+
+def unique(seq):
+    seen = set()
+    seen_add = seen.add
+    return [ x for x in seq if x not in seen and not seen_add(x)]
+
+field_param = ''
+rows = [[] for i in range(9)]
+cols = [[] for i in range(9)]
+for i,c in zip(field, pNN):
+    i, c = int(i), int(c)
+    row = int((i-1)/9)
+    col = int((i-1)%9)
+    print i, row, col, c
+    field_param += ' '+str(row)+str(col)+str(c)
+    rows[row].append(c)
+    cols[col].append(c)
+
+error = False
+for row, col in zip(rows, cols):
+    if row != unique(row) or col != unique(col):
+        print 'ERROR: duplicate number in row or column (1-9 allowed at most once)'
+        print 'row: ', row
+        print 'col: ', col
+        error = True
+if error:
+        print 'WARNING: Solver will run forever (just used to display Sudoku field)'
+        # exit()
+os.system('java -cp . Sudoku'+field_param)
