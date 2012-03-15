@@ -2,17 +2,26 @@ import Image, ImageDraw, ImageFont
 import random, os, shutil
 
 folder = 'data'
+concrete = True
 
 if os.path.exists(folder):
     shutil.rmtree(folder)
 
-fonts = ['arial.ttf', 'ariali.ttf', 'comicbd.ttf']#, 'HARNGTON.TTF', 'FREESCPT.TTF'] #'LHANDW.TTF', 'HoboStd.otf']
-size_mu = 19
-size_sig = 3
-pos_sig = 0
-color_sig = 100
+if(concrete):
+    fonts = ['arialbd.ttf', 'comicbd.ttf'] #, 'arialbd.ttf', 'ariblk.ttf']
+    size_mu = 16
+    size_sig = 1
+    pos_sig = 1
+    color_sig = 10
+    rotate_sig = 0
+else:
+    fonts = ['arial.ttf', 'ariali.ttf', 'comicbd.ttf']#, 'HARNGTON.TTF', 'FREESCPT.TTF'] #'LHANDW.TTF', 'HoboStd.otf']
+    size_mu = 19
+    size_sig = 3
+    pos_sig = 0
+    color_sig = 100
+    rotate_sig = 25
 color_bg = 'white'
-rotate_sig = 25
 nums = xrange(1,10)
 samples = xrange(0,500)
 width, height = 20, 20
