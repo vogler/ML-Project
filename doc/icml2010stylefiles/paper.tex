@@ -72,17 +72,17 @@
 ]
 
 \begin{abstract}
-The goal of this work is to implement number recognition for a Soduko solver.
-First we will describe the generation of synthetic data, in this case labelled images of numbers.
+The goal of this work is to implement number recognition for a Sudoku solver.
+First we will describe the generation of synthetic data, in this case labeled images of numbers.
 Then we compare different machine learning techniques for supervised learning using the generated data.
-Once the training is complete, images of real Sudokus are captured using a webcam and preprocessed to be predicted by the learned models. We evaluate the different approaches by analyzing their performance on different data sets.
+Once the training is complete, images of real Sudokus are captured using a webcam and preprocessed in order to be recognized by the learned models. We evaluate the different approaches by analyzing their performance on different data sets.
 \end{abstract}
 
 \section{Introduction}
 Number and letter recognition is key in many real-world applications. Digitalizing print media, automated sorting of letters, or recognition of signs in robotics or driver assistance systems require well performing algorithms for character recognition. In the following we analyze the performance of different techniques for number recognition, namely Neural Networks (NN), Support Vector Machines (SVM) and Logistic Regression (LR), by using them in an automated Sudoku solver.
 
 \section{Overview}
-Figure \ref{fig:overview} shows the basic data flow and the participating data manipulators. First of all we generate data by sampling position, rotation, size and color of a number and place it based on these values on a white 20x20 pixel image. Examples of 9 such generated images are shown in Figure \ref{fig:generated_numbers}.The corresponding labels are defined by the name of the folder the images are stored in.
+Figure \ref{fig:overview} shows the basic data flow and the participating data manipulators. First of all we generate data by sampling position, rotation, size and color of a number and place it based on these values on a white 20x20 pixel image. Examples of 9 such generated images are shown in Figure \ref{fig:generated_numbers}. The corresponding labels are defined by the name of the folder the images are stored in.
 \begin{figure}[ht]
 	\centerline{\includegraphics[scale=0.25]{../examples}}
 	\caption{Examples of generated numbers}
