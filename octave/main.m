@@ -65,7 +65,7 @@ for i = 0:loops
 		printf('\n=== svm in iteration %i\n', i);
 		% svm
 		t=cputime;
-		model = svmtrain(y_train, X_train, sprintf("-q -c %i -t 2", lambda));
+		model = svmtrain(y_train, X_train, sprintf("-q -c %f -t 2 -d 10", lambda)); % default d=3
 		cpu_time_svm += cputime-t;
 		%printf('Total cpu time for training: %f seconds\n', cputime-t);
 		fprintf('Test Set Accuracy (SVM): ');
