@@ -1,5 +1,5 @@
 % Initialization
-clear ; close all; clc
+%clear ; close all; clc
 
 if !exist('config.mat')
 	config();
@@ -28,7 +28,7 @@ average_accuracy_log_reg = 0;
 cpu_time_nn = 0;
 cpu_time_svm = 0;
 cpu_time_lr = 0;
-number_of_sets = ceil(length(y)/set_size)
+number_of_sets = ceil(length(y)/set_size);
 
 if (do_cross_validation)
 	loops = number_of_sets-1;
@@ -37,7 +37,9 @@ else
 endif
 
 for i = 0:loops
-	printf('\n===== Starting iteration %i (next training/test set combination) =====\n', i);
+	if (do_cross_validation)
+		printf('\n===== Starting iteration %i (next training/test set combination) =====\n', i);
+	endif
 	b = min((i+1)*set_size, size(y)); % needed if last set is smaller
 	sel = all_indexed_mixed(i*set_size+1 : b); % selecting the current set of row indexes
 	
@@ -62,10 +64,14 @@ for i = 0:loops
 	endif
 	
 	if (use_svm)
-		printf('\n=== svm in iteration %i\n', i);
+		if (do_cross_validation)
+			printf('\n=== svm in iteration %i\n', i);
+		endif
 		% svm
 		t=cputime;
-		model = svmtrain(y_train, X_train, sprintf("-q -c %i -t 2", lambda));
+		lambda
+		gamma
+		model = svmtrain(y_train, X_train, sprintf("-q -c %f -t 2 -g %f", lambda, gamma));
 		cpu_time_svm += cputime-t;
 		%printf('Total cpu time for training: %f seconds\n', cputime-t);
 		fprintf('Test Set Accuracy (SVM): ');
