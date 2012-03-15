@@ -5,6 +5,20 @@ if !exist('config.mat')
 	config();
 endif
 load('config.mat');
+lambda, maxIter, gamma
+use_nn, use_svm, use_lr
+if exist(models_file)
+    load(models_file);
+endif
+if (exist("Theta1") && exist("Theta2"))
+    disp("nn exists");
+endif
+if (exist("model"))
+    disp("svm exists");
+endif
+if (exist("Theta"))
+    disp("lr exists");
+endif
 
 % Load images
 cache = sprintf("%s/%s", data_folder, cache_file);
