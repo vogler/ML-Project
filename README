@@ -1,1 +1,5 @@
-Project for Machine Learning
+Sudoku-Solver (Project for Machine Learning)
+1. Detection (C++, OpenCV)
+2. Post-processing (Python)
+3. Prediction: Neural Network (Octave & PyBrain), SVM & LinReg (Octave)
+4. Solver (Java)
